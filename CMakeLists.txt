@@ -57,11 +57,13 @@ set(
 	K_INC_FILES
 		${KERNEL_INC_DIR}/rpp.hpp
 		${KERNEL_INC_DIR}/thread.hpp
+		${KERNEL_INC_DIR}/scheduler.hpp
 )
 set(
 	K_SRC_FILES
 		${KERNEL_SRC_DIR}/rpp.cpp
 		${KERNEL_SRC_DIR}/thread.cpp
+		${KERNEL_SRC_DIR}/scheduler.cpp
 )
 
 ###################################
