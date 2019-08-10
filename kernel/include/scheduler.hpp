@@ -1,3 +1,6 @@
+#include <array>
+#include <optional>
+
 #include "thread.hpp"
 
 namespace rpp {
@@ -6,19 +9,28 @@ namespace rpp {
      * \brief Basic kernel scheduler object type.
      * 
      * \details Generic scheduler for running threads.
+     * 
+     * \tparam MaxThreads The maximum number of threads a single scheduler instance can handle.
      */
-    class scheduler {
+    template<std::size_t MaxThreads> class scheduler {
         public:
             /**
              * \brief Thread ID type.
              */
-            using tid_t = unsigned int;
+            using tid_t = std::size_t;
 
             /**
              * \brief Reserved thread ID value that no thread can have.
              */
             static constexpr tid_t invalid_tid = 0;
 
+        private:
+            /**
+             * \brief The threads managed by this scheduler.
+             */
+            std::array<std::optional<thread>,MaxThreads> threads;
+
+        public:
             /**
              * \brief Add a new thread for this scheduler to schedule.
              * 
@@ -36,3 +48,5 @@ namespace rpp {
     };
 
 }
+
+#include "scheduler.ipp"

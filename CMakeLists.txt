@@ -46,6 +46,7 @@ set(RPP_KERNEL_DIR ${RPP_ROOT_DIR}/kernel)
 
 # get directories containing internal code
 set(KERNEL_INC_DIR ${RPP_KERNEL_DIR}/include)
+set(KERNEL_IPP_DIR ${KERNEL_INC_DIR}/ipp)
 set(KERNEL_SRC_DIR ${RPP_KERNEL_DIR}/src)
 
 #########################
@@ -58,6 +59,10 @@ set(
 		${KERNEL_INC_DIR}/rpp.hpp
 		${KERNEL_INC_DIR}/thread.hpp
 		${KERNEL_INC_DIR}/scheduler.hpp
+)
+set(
+	K_IPP_FILES
+		${KERNEL_IPP_DIR}/scheduler.ipp
 )
 set(
 	K_SRC_FILES
@@ -75,6 +80,7 @@ add_library(
 	rpp
 	STATIC
 		${K_INC_FILES}
+		${K_IPP_FILES}
 		${K_SRC_FILES}
 )
 # set include directories
@@ -82,6 +88,7 @@ target_include_directories(
 	rpp
 	PRIVATE
 		${KERNEL_INC_DIR}
+		${KERNEL_IPP_DIR}
 )
 # set lin-time optimization if available, and use C++17
 set_target_properties(
