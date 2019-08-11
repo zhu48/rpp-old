@@ -39,7 +39,7 @@ endif()
 ######################
 
 # get RPP repository root directory
-set(RPP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+get_filename_component(RPP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 
 # get top level directories containing code
 set(RPP_KERNEL_DIR ${RPP_ROOT_DIR}/kernel)
