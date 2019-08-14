@@ -24,4 +24,12 @@ namespace rpp {
         }
     }
 
+    template<std::size_t MaxThreads>
+    [[noreturn]] void
+    scheduler<MaxThreads>::run( void ) noexcept {
+        while( true ) {
+
+        }
+    }
+
 }
