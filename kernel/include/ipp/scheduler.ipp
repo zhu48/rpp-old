@@ -28,7 +28,14 @@ namespace rpp {
     [[noreturn]] void
     scheduler<MaxThreads>::run( void ) noexcept {
         while( true ) {
-
+            for ( const auto& opt_thrd : threads ) {
+                if ( opt_thrd.has_value() ) {
+                    const auto& thrd = opt_thrd.value();
+                    if ( thrd.status == thread::status_t::ready ) {
+                        thrd.execute();
+                    }
+                }
+            }
         }
     }
 

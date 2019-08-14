@@ -21,13 +21,16 @@ namespace rpp {
                 const void* const frame_base; //!< Pointer to thread's current stack frame.
             };
 
-        private:
             /**
-             * \brief Thread entry point function.
+             * \brief Status codes to indicate the thread's status.
              */
-            entry_fn_t* const entry;
+            enum class status_t {
+                ready,  //!< Thread is ready to run.
+                waiting //!< Thread is waiting for an event.
+            };
 
-        public:
+            status_t status;
+
             /**
              * \brief Construct a thread object from an entry point function and base stack pointer.
              * 
@@ -47,6 +50,12 @@ namespace rpp {
              * \brief Start or continue running the thread on the current processor.
              */
             void execute( void ) const;
+
+        private:
+            /**
+             * \brief The thread's context information.
+             */
+            const context_t context;
     };
 
 }
