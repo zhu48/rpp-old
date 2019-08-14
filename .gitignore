@@ -33,3 +33,13 @@
 
 # Environment
 *.vscode
+
+# Visual Studio
+*.vcxproj
+*.vcxproj.*
+*.sln
+
+# CMake
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles
