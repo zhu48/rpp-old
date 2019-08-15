@@ -49,3 +49,6 @@ build/CMakeFiles
 
 # Make
 build/Makefile
+
+# Project Targets
+build/rpp_test_sched

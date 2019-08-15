@@ -7,6 +7,12 @@ cmake_minimum_required(VERSION 3.3)
 
 project(RPP CXX)
 
+# set language standards
+set(CMAKE_C_STANDARD            17)
+set(CMAKE_CXX_STANDARD          17)
+set(CMAKE_C_STANDARD_REQUIRED   TRUE)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+
 # set the policy to enable inter-procedural optimization if available
 if(POLICY CMP0069)
 	cmake_policy(SET CMP0069 NEW)
@@ -32,6 +38,7 @@ if(NOT DEFINED IPO_SUPPORTED)
 	endif()
 	
 	set(IPO_SUPPORTED ${IPO} CACHE STRING "Inter-procedural optimzation support.")
+	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 
 ######################
@@ -48,6 +55,9 @@ set(RPP_KERNEL_DIR ${RPP_ROOT_DIR}/kernel)
 set(KERNEL_INC_DIR ${RPP_KERNEL_DIR}/include)
 set(KERNEL_IPP_DIR ${KERNEL_INC_DIR}/ipp)
 set(KERNEL_SRC_DIR ${RPP_KERNEL_DIR}/src)
+
+# get directories containing kernel tests
+set(TEST_SRC_DIR ${RPP_ROOT_DIR}/test)
 
 #########################
 # Gather Target Sources #
@@ -72,6 +82,12 @@ set(
 		${KERNEL_SRC_DIR}/scheduler.cpp
 )
 
+# all test files
+set(
+	TEST_SCHED_SRC_FILES
+		${TEST_SRC_DIR}/test_sched.cpp
+)
+
 ###################################
 # Configure Kernel Library Target #
 ###################################
@@ -87,17 +103,21 @@ add_library(
 # set include directories
 target_include_directories(
 	rpp
-	PRIVATE
+	PUBLIC
 		${KERNEL_INC_DIR}
 		${KERNEL_IPP_DIR}
 )
-# set lin-time optimization if available, and use C++17
-set_target_properties(
-	rpp
-	PROPERTIES
-		INTERPROCEDURAL_OPTIMIZATION ${IPO_SUPPORTED}
-		C_STANDARD                   17
-		CXX_STANDARD                 17
-		C_STANDARD_REQUIRED          TRUE
-		CXX_STANDARD_REQUIRED        TRUE
+
+####################################
+# Configure Test Executable Target #
+####################################
+
+message(STATUS "Creating test executable target.")
+
+# compile test executable
+add_executable(
+	rpp_test_sched
+		${TEST_SCHED_SRC_FILES}
 )
+# link to kernel library
+target_link_libraries(rpp_test_sched rpp)
