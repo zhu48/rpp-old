@@ -37,7 +37,7 @@ namespace rpp {
              * \param[in] entry The entry point function.
              * \param[in] stack The base of the stack to allocate to the thread.
              */
-            constexpr thread( entry_fn_t* const entry, void* const stack ) noexcept;
+            constexpr thread( entry_fn_t entry, void* const stack ) noexcept;
 
             /**
              * \brief Find the thread object corresponding to the calling context.
@@ -59,3 +59,5 @@ namespace rpp {
     };
 
 }
+
+#include "thread.ipp"
