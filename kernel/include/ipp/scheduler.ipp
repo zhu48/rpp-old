@@ -17,7 +17,7 @@ namespace rpp {
         );
 
         if ( empty_pos == threads.end() ) {
-            return MaxThreads;
+            return invalid_tid;
         } else {
             *empty_pos = new_thread;
             return std::distance( threads.begin(), empty_pos );
