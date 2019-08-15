@@ -62,6 +62,7 @@ set(
 )
 set(
 	K_IPP_FILES
+		${KERNEL_IPP_DIR}/thread.ipp
 		${KERNEL_IPP_DIR}/scheduler.ipp
 )
 set(
