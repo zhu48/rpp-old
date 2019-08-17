@@ -39,7 +39,7 @@ namespace rpp {
              * \return Returns the thread ID assigned to the added thread.
              * \retval invalid_tid Could not schedule the new thread.
              */
-            tid_t add_thread( const thread& new_thread ) noexcept;
+            tid_t add_thread( thread&& new_thread ) noexcept;
 
             /**
              * \brief Run the scheduler, handingcontrol of the CPU to the scheduler.

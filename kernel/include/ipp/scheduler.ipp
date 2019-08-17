@@ -5,9 +5,7 @@ namespace rpp {
 
     template<std::size_t MaxThreads>
     typename scheduler<MaxThreads>::tid_t
-    scheduler<MaxThreads>::add_thread(
-        const thread& new_thread
-    ) noexcept {
+    scheduler<MaxThreads>::add_thread( thread&& new_thread ) noexcept {
         auto empty_pos = std::find_if_not(
             threads.begin(),
             threads.end(),
@@ -19,7 +17,7 @@ namespace rpp {
         if ( empty_pos == threads.end() ) {
             return invalid_tid;
         } else {
-            *empty_pos = new_thread;
+            empty_pos->emplace( std::move( new_thread ) );
             return std::distance( threads.begin(), empty_pos );
         }
     }
