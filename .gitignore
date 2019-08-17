@@ -41,6 +41,7 @@ build/*.sln
 build/Debug
 build/x64
 build/*.dir
+build/.vs
 
 # CMake
 build/CMakeCache.txt
