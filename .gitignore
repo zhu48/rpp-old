@@ -50,5 +50,10 @@ build/CMakeFiles
 # Make
 build/Makefile
 
+# Doxygen
+docs/html
+docs/Doxyfile
+docs/warnings.log
+
 # Project Targets
 build/rpp_test_sched
