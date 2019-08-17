@@ -42,7 +42,7 @@ namespace rpp {
             tid_t add_thread( thread&& new_thread ) noexcept;
 
             /**
-             * \brief Run the scheduler, handingcontrol of the CPU to the scheduler.
+             * \brief Run the scheduler, handing control of the CPU to the scheduler.
              */
             [[noreturn]] void run( void ) noexcept;
     };
