@@ -40,6 +40,55 @@ namespace rpp {
             constexpr thread( entry_fn_t entry, void* const stack ) noexcept;
 
             /**
+             * \brief Disallow default construction.
+             * 
+             * Default construction does not make sense, as a thread without an entry point or stack
+             * might as well not exist.
+             */
+            thread( void ) = delete;
+
+            /**
+             * \brief Disallow copy construction.
+             * 
+             * Each thread object has express and exclusive ownership of its own context, and must
+             * not be copied.
+             */
+            thread( const thread& ) = delete;
+
+            /**
+             * \brief Construct by taking the contents of another thread object.
+             * 
+             * \param[in] rhs The object to take the contents of. The moved-from object forfeits
+             *                ownership of its context to this thread object.
+             */
+            thread( thread&& rhs ) noexcept = default;
+
+            /**
+             * \brief Kill this thread and free its resources.
+             */
+            ~thread( void ) noexcept = default;
+
+            /**
+             * \brief Disallow copying.
+             * 
+             * Each thread object has express and exclusive ownership of its own context, and must
+             * not be copied.
+             * 
+             * \return Returns self-reference.
+             */
+            thread& operator=( const thread& ) = delete;
+
+            /**
+             * \brief Move the contents of another thread object to this thread object.
+             * 
+             * \param[in] rhs The object to take the contents of. The moved-from object forfeits
+             *                ownership of its context to this thread object.
+             * 
+             * \return Returns self-reference.
+             */
+            thread& operator=( thread&& rhs ) noexcept = default;
+
+            /**
              * \brief Find the thread object corresponding to the calling context.
              * 
              * \return Returns the thread context corresponding to the calling context.
