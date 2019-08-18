@@ -112,15 +112,19 @@ target_include_directories(
 # Configure Test Executable Target #
 ####################################
 
-message(STATUS "Creating test executable target.")
+if(RPP_TEST_TARGET)
+	message(STATUS "Creating test executable target.")
 
-# compile test executable
-add_executable(
-	rpp_test_sched
-		${TEST_SCHED_SRC_FILES}
-)
-# link to kernel library
-target_link_libraries(rpp_test_sched rpp)
+	# compile test executable
+	add_executable(
+		rpp_test_sched
+			${TEST_SCHED_SRC_FILES}
+	)
+	# link to kernel library
+	target_link_libraries(rpp_test_sched rpp)
+else()
+	message(STATUS "Excluding test executable target from build.")
+endif()
 
 ############################
 # Configure Doxygen Target #
