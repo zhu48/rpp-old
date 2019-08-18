@@ -139,6 +139,9 @@ else()
 	set(DOCS_ROOT_DIR ${RPP_ROOT_DIR}/docs)
 	set(DOCS_HTML_DIR ${DOCS_ROOT_DIR}/html)
 	
+	# set project name in documentation
+	set(DOCS_PROJECT_NAME ${CMAKE_PROJECT_NAME})
+
 	# set files to generated documentation from
 	set(
 		DOCUMENTED_FILES
