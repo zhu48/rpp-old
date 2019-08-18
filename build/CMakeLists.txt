@@ -142,8 +142,8 @@ else()
 	# set files to generated documentation from
 	set(
 		DOCUMENTED_FILES
-			${RPP_API_HEADERS}
 			${K_INC_FILES}
+			${K_IPP_FILES}
 			${K_SRC_FILES}
 	)
 	# convert CMake files list to a space-separated list for Doxygen
