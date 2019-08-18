@@ -9,7 +9,7 @@ set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
 
 set(RPP_TARGET_PLATFORM "NONE"    CACHE STRING "Target platform"              FORCE)
 set(RPP_COMPILER        "DEFAULT" CACHE STRING "Target compiler"              FORCE)
-set(RPP_TEST_TARGET     "TRUE"    CACHE BOOL   "Flag to create a test target" FORCE)
+set(RPP_TEST_TARGET     "FALSE"   CACHE BOOL   "Flag to create a test target" FORCE)
 
 ##############################
 # Valid Configuration Values #
