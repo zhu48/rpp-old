@@ -43,6 +43,10 @@ build/x64
 build/*.dir
 build/.vs
 
+# Eclipse
+*.cproject
+*.project
+
 # CMake
 build/CMakeCache.txt
 build/cmake_install.cmake
