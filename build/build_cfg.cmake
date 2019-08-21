@@ -11,6 +11,9 @@ set(RPP_TARGET_PLATFORM "NONE"    CACHE STRING "Target platform"              FO
 set(RPP_COMPILER        "DEFAULT" CACHE STRING "Target compiler"              FORCE)
 set(RPP_TEST_TARGET     "FALSE"   CACHE BOOL   "Flag to create a test target" FORCE)
 
+set(XSDK_VERSION      "NONE" CACHE PATH   "Xilinx SDK version"           FORCE)
+set(XSDK_INSTALL_PATH "NONE" CACHE STRING "Xilinx SDK installation path" FORCE)
+
 ##############################
 # Valid Configuration Values #
 ##############################
@@ -20,9 +23,67 @@ set(
         "xc7z" # Zynq-7000 SoC
 )
 
-set(RPP_COMPILER_OPTS
+set(
+    RPP_COMPILER_OPTS
         "gcc"
 )
+
+set(
+    XSDK_VERSION_OPTS
+        "2019.1"
+        "2018.2"
+        "2017.1"
+)
+
+##########################
+# Platform Configuration #
+##########################
+
+if(NOT UNIX)
+    set(EXTENSION ".exe" CACHE STRING "Host platform executable file extension.")
+endif()
+
+########################
+# Vivado Configuration #
+########################
+
+if(XSDK_VERSION STREQUAL "NONE")
+    message(STATUS "Using non-IDE environment")
+else()
+    message(STATUS "Configured Xilinx SDK version     : ${XSDK_VERSION}")
+    message(STATUS "Configured Xilinx SDK install path: ${XSDK_INSTALL_PATH}")
+
+    # set paths to Xilinx-distributed compilers and build tools
+    set(XSDK_ROOT_DIR "${XSDK_INSTALL_PATH}/${XSDK_VERSION}" CACHE PATH "" FORCE)
+    set(TC_PATH "${XSDK_ROOT_DIR}/gnu/aarch32/nt/gcc-arm-none-eabi/bin/" CACHE STRING "" FORCE)
+
+    if(EXISTS ${TC_PATH})
+        # for Xilinx SDK force gcc as the compiler
+        set(RPP_COMPILER "gcc" CACHE STRING "Target compiler" FORCE)
+
+        # generate Makefile and Xilinx SDK projects
+        set(CMAKE_GENERATOR       "Unix Makefiles" CACHE INTERNAL "" FORCE)
+        set(CMAKE_EXTRA_GENERATOR "Eclipse CDT4"   CACHE INTERNAL "" FORCE)
+
+		# use Make from Xilinx
+		set(CMAKE_MAKE_PROGRAM "${XSDK_ROOT_DIR}/gnuwin/bin/make${EXTENSION}" CACHE PATH "" FORCE)
+
+        # set expected Eclipse version based on the Xilinx SDK version
+        if(XSDK_VERSION STREQUAL "2019.1")
+            set(CMAKE_ECLIPSE_VERSION 4.6.1 CACHE PATH "" FORCE)
+        elseif(XSDK_VERSION STREQUAL "2018.2")
+            set(CMAKE_ECLIPSE_VERSION 4.6.1 CACHE PATH "" FORCE)
+        elseif(XSDK_VERSION STREQUAL "2017.1")
+            set(CMAKE_ECLIPSE_VERSION 4.6.1 CACHE PATH "" FORCE)
+        else()
+            message(STATUS "Set XSDK_VERSION to one of the following:")
+            message(STATUS "    ${XSDK_VERSION_OPTS}")
+            message(FATAL_ERROR "Unsupported XSDK version: ${XSDK_VERSION}")
+        endif()
+    else()
+        message(FATAL_ERROR "Could not find Xilinx-distributed compilers at install path")
+    endif()
+endif()
 
 ################################
 # Toolchain Path Configuration #
