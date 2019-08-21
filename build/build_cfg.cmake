@@ -40,7 +40,7 @@ set(
 ##########################
 
 if(NOT UNIX)
-    set(EXTENSION ".exe" CACHE STRING "Host platform executable file extension.")
+    set(CMAKE_EXECUTABLE_SUFFIX ".exe" CACHE STRING "Host platform executable file extension.")
 endif()
 
 ########################
@@ -66,7 +66,11 @@ else()
         set(CMAKE_EXTRA_GENERATOR "Eclipse CDT4"   CACHE INTERNAL "" FORCE)
 
 		# use Make from Xilinx
-		set(CMAKE_MAKE_PROGRAM "${XSDK_ROOT_DIR}/gnuwin/bin/make${EXTENSION}" CACHE PATH "" FORCE)
+		set(
+            CMAKE_MAKE_PROGRAM
+                "${XSDK_ROOT_DIR}/gnuwin/bin/make${CMAKE_EXECUTABLE_SUFFIX}"
+            CACHE PATH "" FORCE
+        )
 
         # set expected Eclipse version based on the Xilinx SDK version
         if(XSDK_VERSION STREQUAL "2019.1")
