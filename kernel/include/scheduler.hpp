@@ -1,3 +1,6 @@
+#ifndef SCHEDULER_HPP
+#define SCHEDULER_HPP
+
 #include <array>
 #include <optional>
 
@@ -50,3 +53,5 @@ namespace rpp {
 }
 
 #include "scheduler.ipp"
+
+#endif // #ifndef SCHEDULER_HPP
