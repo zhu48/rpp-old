@@ -1,3 +1,7 @@
+#ifndef THREAD_HPP
+#define THREAD_HPP
+
+#include "portable_types.h"
 
 namespace rpp {
 
@@ -12,14 +16,6 @@ namespace rpp {
              * \brief Function type used as entry point to thread execution.
              */
             using entry_fn_t = void (*)( void* const );
-
-            /**
-             * \brief Thread context type.
-             */
-            using context_t = struct {
-                const void* const stack_base; //!< Pointer to thread's allocated stack's base.
-                const void* const frame_base; //!< Pointer to thread's current stack frame.
-            };
 
             /**
              * \brief Status codes to indicate the thread's status.
@@ -98,15 +94,17 @@ namespace rpp {
             /**
              * \brief Start or continue running the thread on the current processor.
              */
-            void execute( void ) const;
+            void execute( void );
 
         private:
             /**
              * \brief The thread's context information.
              */
-            const context_t context;
+            portable::context_t context;
     };
 
 }
 
 #include "thread.ipp"
+
+#endif // #ifndef THREAD_HPP
