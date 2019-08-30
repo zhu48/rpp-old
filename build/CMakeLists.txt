@@ -56,6 +56,9 @@ set(KERNEL_INC_DIR ${RPP_KERNEL_DIR}/include)
 set(KERNEL_IPP_DIR ${KERNEL_INC_DIR}/ipp)
 set(KERNEL_SRC_DIR ${RPP_KERNEL_DIR}/src)
 
+# get directory containing code specific to the selected platform
+set(KERNEL_PORT_DIR ${KERNEL_SRC_DIR}/${RPP_TARGET_PLATFORM})
+
 # get directories containing kernel tests
 set(TEST_SRC_DIR ${RPP_ROOT_DIR}/test)
 
@@ -83,6 +86,10 @@ set(
 		${KERNEL_SRC_DIR}/thread.cpp
 		${KERNEL_SRC_DIR}/scheduler.cpp
 )
+set(
+	K_PORT_FILES
+		${KERNEL_PORT_DIR}/portable.cpp
+)
 
 # all test files
 set(
@@ -101,6 +108,7 @@ add_library(
 		${K_INC_FILES}
 		${K_IPP_FILES}
 		${K_SRC_FILES}
+		${K_PORT_FILES}
 )
 # set include directories
 target_include_directories(
@@ -154,6 +162,7 @@ else()
 			${K_INC_FILES}
 			${K_IPP_FILES}
 			${K_SRC_FILES}
+			${K_PORT_FILES}
 	)
 	# convert CMake files list to a space-separated list for Doxygen
 	string(REPLACE ";" " " DOX_INPUT "${DOCUMENTED_FILES}")

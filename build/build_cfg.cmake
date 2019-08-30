@@ -20,7 +20,8 @@ set(XSDK_INSTALL_PATH "NONE" CACHE STRING "Xilinx SDK installation path" FORCE)
 
 set(
     RPP_TARGET_PLATFORM_OPTS
-        "xc7z" # Zynq-7000 SoC
+        "hosted" # run on a non-baremetal host
+        "xc7z"   # Zynq-7000 SoC
 )
 
 set(
@@ -65,8 +66,8 @@ else()
         set(CMAKE_GENERATOR       "Unix Makefiles" CACHE INTERNAL "" FORCE)
         set(CMAKE_EXTRA_GENERATOR "Eclipse CDT4"   CACHE INTERNAL "" FORCE)
 
-		# use Make from Xilinx
-		set(
+        # use Make from Xilinx
+        set(
             CMAKE_MAKE_PROGRAM
                 "${XSDK_ROOT_DIR}/gnuwin/bin/make${CMAKE_EXECUTABLE_SUFFIX}"
             CACHE PATH "" FORCE
