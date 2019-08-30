@@ -51,6 +51,7 @@ build/.vs
 build/CMakeCache.txt
 build/cmake_install.cmake
 build/CMakeFiles
+build/compile_commands.json
 
 # Make
 build/Makefile
