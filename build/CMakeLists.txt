@@ -69,6 +69,8 @@ set(
 		${KERNEL_INC_DIR}/rpp.hpp
 		${KERNEL_INC_DIR}/thread.hpp
 		${KERNEL_INC_DIR}/scheduler.hpp
+		${KERNEL_INC_DIR}/portable.h
+		${KERNEL_INC_DIR}/portable_types.h
 )
 set(
 	K_IPP_FILES
