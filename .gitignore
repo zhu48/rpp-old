@@ -35,27 +35,28 @@
 *.vscode
 
 # Visual Studio
-build/*.vcxproj
-build/*.vcxproj.*
-build/*.sln
-build/Debug
-build/Win32
-build/x64
-build/*.dir
-build/.vs
+*.vcxproj
+*.vcxproj.*
+*.sln
+*.dir
+*.vs
+*.tlog
+*.lastbuildstate
+*.ilk
+*.pdb
 
 # Eclipse
 *.cproject
 *.project
 
 # CMake
-build/CMakeCache.txt
-build/cmake_install.cmake
-build/CMakeFiles
-build/compile_commands.json
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles
+compile_commands.json
 
 # Make
-build/Makefile
+Makefile
 
 # Doxygen
 docs/html
