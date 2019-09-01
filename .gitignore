@@ -39,6 +39,7 @@ build/*.vcxproj
 build/*.vcxproj.*
 build/*.sln
 build/Debug
+build/Win32
 build/x64
 build/*.dir
 build/.vs
