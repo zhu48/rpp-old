@@ -7,13 +7,15 @@ void print_tid( void* const arg ) {
 }
 
 int main( int argc, char* argv[] ) {
-    rpp::scheduler<2> cpu0;
+    rpp::scheduler cpu0;
 
-    decltype(cpu0)::tid_t thrd_0_id;
-    thrd_0_id = cpu0.add_thread( rpp::thread( print_tid, &thrd_0_id ) );
+    std::size_t thrd_0_id = 0;
+    rpp::thread thrd_0( print_tid, &thrd_0_id );
+    cpu0.add_thread( thrd_0 );
 
-    decltype(cpu0)::tid_t thrd_1_id;
-    thrd_1_id = cpu0.add_thread( rpp::thread( print_tid, &thrd_1_id ) );
+    std::size_t thrd_1_id = 1;
+    rpp::thread thrd_1( print_tid, &thrd_1_id );
+    cpu0.add_thread( thrd_0 );
 
     cpu0.run();
 
