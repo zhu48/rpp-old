@@ -38,7 +38,7 @@ if(NOT DEFINED IPO_SUPPORTED)
 	endif()
 	
 	set(IPO_SUPPORTED ${IPO} CACHE STRING "Inter-procedural optimzation support.")
-	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE CACHE INTERNAL "" FORCE)
 endif()
 
 ######################
