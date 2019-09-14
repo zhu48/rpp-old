@@ -2,9 +2,7 @@
 #define SCHEDULER_HPP
 
 #include <queue>
-#include <functional>
 #include <array>
-#include <optional>
 
 #include "thread.hpp"
 
