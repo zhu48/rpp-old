@@ -52,12 +52,13 @@ get_filename_component(RPP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 set(RPP_KERNEL_DIR ${RPP_ROOT_DIR}/kernel)
 
 # get directories containing kernel headers
-set(KERNEL_PUB_DIR ${RPP_KERNEL_DIR}/include)
-set(KERNEL_IPP_DIR ${KERNEL_PUB_DIR}/ipp)
+set(KERNEL_PUB_INC_DIR ${RPP_KERNEL_DIR}/include)
+set(KERNEL_PUB_IPP_DIR ${KERNEL_PUB_INC_DIR}/ipp)
 
 # get kernel implementation directories
 set(KERNEL_IMP_DIR ${RPP_KERNEL_DIR}/impl)
 set(KERNEL_INC_DIR ${KERNEL_IMP_DIR}/include)
+set(KERNEL_IPP_DIR ${KERNEL_INC_DIR}/ipp)
 set(KERNEL_SRC_DIR ${KERNEL_IMP_DIR}/src)
 
 # get directory containing code specific to the selected platform
@@ -72,17 +73,25 @@ set(TEST_SRC_DIR ${RPP_ROOT_DIR}/test)
 
 # all kernel internal files
 set(
+	K_API_INC_FILES
+		${KERNEL_PUB_INC_DIR}/rpp.hpp
+		${KERNEL_PUB_INC_DIR}/thread.hpp
+		${KERNEL_PUB_INC_DIR}/scheduler.hpp
+		${KERNEL_PUB_INC_DIR}/queue_array.hpp
+		${KERNEL_PUB_INC_DIR}/portable.h
+		${KERNEL_PUB_INC_DIR}/portable_types.h
+)
+set(
+	K_API_IPP_FILES
+		${KERNEL_PUB_IPP_DIR}/thread.ipp
+		${KERNEL_PUB_IPP_DIR}/scheduler.ipp
+		${KERNEL_PUB_IPP_DIR}/queue_array.ipp
+)
+set(
 	K_INC_FILES
-		${KERNEL_PUB_DIR}/rpp.hpp
-		${KERNEL_PUB_DIR}/thread.hpp
-		${KERNEL_PUB_DIR}/scheduler.hpp
-		${KERNEL_PUB_DIR}/portable.h
-		${KERNEL_PUB_DIR}/portable_types.h
 )
 set(
 	K_IPP_FILES
-		${KERNEL_IPP_DIR}/thread.ipp
-		${KERNEL_IPP_DIR}/scheduler.ipp
 )
 set(
 	K_SRC_FILES
@@ -109,6 +118,8 @@ set(
 add_library(
 	rpp
 	STATIC
+		${K_API_INC_FILES}
+		${K_API_IPP_FILES}
 		${K_INC_FILES}
 		${K_IPP_FILES}
 		${K_SRC_FILES}
@@ -118,10 +129,11 @@ add_library(
 target_include_directories(
 	rpp
 	PUBLIC
-		${KERNEL_PUB_DIR}
-		${KERNEL_IPP_DIR}
+		${KERNEL_PUB_INC_DIR}
+		${KERNEL_PUB_IPP_DIR}
 	PRIVATE
 		${KERNEL_INC_DIR}
+		${KERNEL_IPP_DIR}
 )
 
 ####################################
