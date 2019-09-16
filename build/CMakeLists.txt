@@ -87,6 +87,7 @@ set(
 		${KERNEL_PUB_IPP_DIR}/thread.ipp
 		${KERNEL_PUB_IPP_DIR}/scheduler.ipp
 		${KERNEL_PUB_IPP_DIR}/queue_array.ipp
+		${KERNEL_PUB_IPP_DIR}/dynamic_span.ipp
 )
 set(
 	K_INC_FILES
