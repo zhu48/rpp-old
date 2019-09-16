@@ -1,3 +1,4 @@
+#include <tuple>
 #include <iostream>
 
 #include "scheduler.hpp"
@@ -7,17 +8,14 @@ void print_tid( void* const arg ) {
 }
 
 int main( int argc, char* argv[] ) {
-    rpp::scheduler cpu0;
+    std::array<rpp::decision_data,4> dec_arr;
 
-    std::size_t thrd_0_id = 0;
-    rpp::thread thrd_0( print_tid, &thrd_0_id );
-    cpu0.add_thread( thrd_0 );
-
-    std::size_t thrd_1_id = 1;
-    rpp::thread thrd_1( print_tid, &thrd_1_id );
-    cpu0.add_thread( thrd_0 );
-
-    cpu0.run();
+    rpp::run(
+        rpp::dynamic_span<rpp::decision_data>{
+            &(dec_arr.data()[0]),
+            std::tuple_size_v<decltype(dec_arr)>
+        }
+    );
 
     return -1;
 }
