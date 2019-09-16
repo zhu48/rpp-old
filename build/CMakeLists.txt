@@ -78,6 +78,7 @@ set(
 		${KERNEL_PUB_INC_DIR}/thread.hpp
 		${KERNEL_PUB_INC_DIR}/scheduler.hpp
 		${KERNEL_PUB_INC_DIR}/queue_array.hpp
+		${KERNEL_PUB_INC_DIR}/dynamic_span.hpp
 		${KERNEL_PUB_INC_DIR}/portable.h
 		${KERNEL_PUB_INC_DIR}/portable_types.h
 )
