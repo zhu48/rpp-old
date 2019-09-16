@@ -1,6 +1,8 @@
 #ifndef DYNAMIC_SPAN_HPP
 #define DYNAMIC_SPAN_HPP
 
+#include <cstdint>
+
 namespace rpp {
 
     template<typename T> struct dynamic_span {
