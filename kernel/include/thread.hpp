@@ -36,7 +36,7 @@ namespace rpp {
              * \param[in] arg   The argument to pass to the entry point function.
              * \param[in] stack The base of the stack to allocate to the thread.
              */
-            constexpr thread( entry_fn_t entry, entry_fn_arg_t arg, void* const stack ) noexcept;
+            thread( entry_fn_t entry, entry_fn_arg_t arg, void* const stack ) noexcept;
 
             /**
              * \brief Disallow default construction.
