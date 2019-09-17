@@ -8,6 +8,13 @@ namespace portable {
 extern "C" {
 #endif // #ifdef __cplusplus
 
+void initialize_stack(
+    void* const      stack,
+    entry_fn_t       entry,
+    entry_fn_arg_t   arg,
+    context_t* const context
+);
+
 /**
  * \brief Switch the current CPU to the given context.
  * 

@@ -20,8 +20,8 @@ typedef void (*entry_fn_t)( entry_fn_arg_t );
  * \brief Thread context type.
  */
 typedef struct {
-    const void* const stack_base; //!< Pointer to thread's allocated stack's base.
-    const void* const frame_base; //!< Pointer to thread's current stack frame.
+    const void* stack_base; //!< Pointer to thread's allocated stack's base.
+    const void* frame_base; //!< Pointer to thread's current stack frame.
 } context_t;
 
 #ifdef __cplusplus
