@@ -8,11 +8,12 @@ void print_tid( void* const arg ) {
 }
 
 int main( int argc, char* argv[] ) {
+    std::array<int,4> args = { 0, 1, 2, 3 };
     std::array<rpp::thread,4> thrd_arr = {
-        rpp::thread( print_tid, nullptr ),
-        rpp::thread( print_tid, nullptr ),
-        rpp::thread( print_tid, nullptr ),
-        rpp::thread( print_tid, nullptr )
+        rpp::thread( print_tid, &(args[0]), nullptr ),
+        rpp::thread( print_tid, &(args[1]), nullptr ),
+        rpp::thread( print_tid, &(args[2]), nullptr ),
+        rpp::thread( print_tid, &(args[3]), nullptr )
     };
     std::array<rpp::decision_data,4> dec_arr = {
         rpp::decision_data{ &(thrd_arr[0]), 0 },
