@@ -179,6 +179,8 @@ else()
 	# set files to generated documentation from
 	set(
 		DOCUMENTED_FILES
+			${K_API_INC_FILES}
+			${K_API_IPP_FILES}
 			${K_INC_FILES}
 			${K_IPP_FILES}
 			${K_SRC_FILES}
