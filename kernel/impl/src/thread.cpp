@@ -9,10 +9,9 @@ thread::thread(
     portable::entry_fn_arg_t arg,
     void* const              stack
 ) noexcept :
-    status( status_t::ready ),
-    context{ stack, stack }
+    status( status_t::ready )
 {
-    // nothing
+    portable::initialize_stack( stack, entry, arg, &context );
 }
 
 void thread::execute( void ) {
