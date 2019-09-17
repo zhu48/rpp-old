@@ -12,13 +12,6 @@ namespace rpp {
      */
     class thread {
         public:
-            using entry_fn_arg_t = void* const;
-
-            /**
-             * \brief Function type used as entry point to thread execution.
-             */
-            using entry_fn_t = void (*)( entry_fn_arg_t );
-
             /**
              * \brief Status codes to indicate the thread's status.
              */
@@ -36,7 +29,11 @@ namespace rpp {
              * \param[in] arg   The argument to pass to the entry point function.
              * \param[in] stack The base of the stack to allocate to the thread.
              */
-            thread( entry_fn_t entry, entry_fn_arg_t arg, void* const stack ) noexcept;
+            thread(
+                portable::entry_fn_t     entry,
+                portable::entry_fn_arg_t arg,
+                void* const              stack
+            ) noexcept;
 
             /**
              * \brief Disallow default construction.

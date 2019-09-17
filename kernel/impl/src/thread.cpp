@@ -4,7 +4,11 @@
 
 using namespace rpp;
 
-thread::thread( entry_fn_t entry, entry_fn_arg_t arg, void* const stack ) noexcept :
+thread::thread(
+    portable::entry_fn_t     entry,
+    portable::entry_fn_arg_t arg,
+    void* const              stack
+) noexcept :
     status( status_t::ready ),
     context{ stack, stack }
 {
