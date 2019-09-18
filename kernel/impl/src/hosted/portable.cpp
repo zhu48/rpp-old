@@ -7,6 +7,10 @@ using namespace portable;
 namespace {
 
     void store_handle( context_t* const context, std::thread::native_handle_type handle ) {
+        static_assert(
+			sizeof( decltype( *context ) ) >= sizeof( decltype( handle ) ),
+			"context_t is too small to hold native thread handle"
+		);
         *reinterpret_cast<std::thread::native_handle_type*>( context ) = handle;
     }
 
