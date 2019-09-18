@@ -40,19 +40,19 @@ namespace rpp {
     template<typename T> constexpr
     typename dynamic_span<T>::iterator
     dynamic_span<T>::end() noexcept {
-        return first + num - 1;
+        return first + num;
     }
 
     template<typename T> constexpr
     typename dynamic_span<T>::const_iterator
     dynamic_span<T>::end() const noexcept {
-        return first + num - 1;
+        return first + num;
     }
 
     template<typename T> constexpr
     typename dynamic_span<T>::const_iterator
     dynamic_span<T>::cend() const noexcept {
-        return first + num - 1;
+        return first + num;
     }
 
     template<typename T> constexpr
