@@ -41,6 +41,15 @@ if(NOT DEFINED IPO_SUPPORTED)
 	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${IPO} CACHE INTERNAL "" FORCE)
 endif()
 
+if(RPP_TARGET_PLATFORM STREQUAL "hosted" AND UNIX)
+    # targeting Unix hosts requires pthreads linkage
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    set(RPP_PTHREADS TRUE  CACHE BOOL "Requirement to link to pthreads library")
+else()
+    set(RPP_PTHREADS FALSE CACHE BOOL "Requirement to link to pthreads library")
+endif()
+
 ######################
 # Derive Directories #
 ######################
@@ -137,6 +146,10 @@ target_include_directories(
 		${KERNEL_INC_DIR}
 		${KERNEL_IPP_DIR}
 )
+# link to pthreads if targeting Unix host
+if(RPP_PTHREADS)
+	target_link_libraries(rpp Threads::Threads)
+endif()
 
 ####################################
 # Configure Test Executable Target #
