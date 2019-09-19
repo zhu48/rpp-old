@@ -58,6 +58,9 @@ cmake_install.cmake
 CMakeFiles
 compile_commands.json
 
+# CTest
+CTestCostData.txt
+
 # Make
 Makefile
 
