@@ -40,7 +40,7 @@ set(
 # Platform Configuration #
 ##########################
 
-if(NOT UNIX)
+if(WIN32)
     set(CMAKE_EXECUTABLE_SUFFIX ".exe" CACHE STRING "Host platform executable file extension.")
 endif()
 
