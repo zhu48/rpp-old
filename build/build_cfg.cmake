@@ -44,6 +44,13 @@ if(WIN32)
     set(CMAKE_EXECUTABLE_SUFFIX ".exe" CACHE STRING "Host platform executable file extension.")
 endif()
 
+# targeting Unix hosts requires pthreads linkage to support threading
+if(RPP_TARGET_PLATFORM STREQUAL "hosted" AND UNIX)
+    set(RPP_PTHREADS TRUE  CACHE BOOL "Requirement to link to pthreads library")
+else()
+    set(RPP_PTHREADS FALSE CACHE BOOL "Requirement to link to pthreads library")
+endif()
+
 ########################
 # Vivado Configuration #
 ########################

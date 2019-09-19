@@ -41,13 +41,10 @@ if(NOT DEFINED IPO_SUPPORTED)
 	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${IPO} CACHE INTERNAL "" FORCE)
 endif()
 
-if(RPP_TARGET_PLATFORM STREQUAL "hosted" AND UNIX)
-    # targeting Unix hosts requires pthreads linkage
-    set(THREADS_PREFER_PTHREAD_FLAG ON)
-    find_package(Threads REQUIRED)
-    set(RPP_PTHREADS TRUE  CACHE BOOL "Requirement to link to pthreads library")
-else()
-    set(RPP_PTHREADS FALSE CACHE BOOL "Requirement to link to pthreads library")
+# find threading library if required
+if(RPP_PTHREADS)
+	set(THREADS_PREFER_PTHREAD_FLAG ON)
+	find_package(Threads REQUIRED)
 endif()
 
 ######################
