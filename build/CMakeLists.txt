@@ -21,23 +21,23 @@ if(NOT DEFINED IPO_SUPPORTED)
 	# check for inter-procedural optimization support
 	include(CheckIPOSupported OPTIONAL RESULT_VARIABLE HAS_CHECK_IPO)
 	if(HAS_CHECK_IPO)
-		message(STATUS "Determining inter-procedural optimization support.")
+		message(STATUS "Determining inter-procedural optimization support")
 		
 		check_ipo_supported(RESULT IPO)
 		
 		if(IPO)
-			message(STATUS "Inter-procedural optimization enabled.")
+			message(STATUS "Inter-procedural optimization enabled")
 		else()
-			message(STATUS "Inter-procedural optimization disabled.")
+			message(STATUS "Inter-procedural optimization disabled")
 		endif()
 	else()
-		message(STATUS "Cannot determine inter-procedural optimization support.")
-		message(STATUS "Inter-procedural optimization is disabled.")
+		message(STATUS "Cannot determine inter-procedural optimization support")
+		message(STATUS "Inter-procedural optimization is disabled")
 		
 		set(IPO FALSE)
 	endif()
 	
-	set(IPO_SUPPORTED ${IPO} CACHE STRING "Inter-procedural optimzation support.")
+	set(IPO_SUPPORTED ${IPO} CACHE STRING "Inter-procedural optimization support")
 	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${IPO} CACHE INTERNAL "" FORCE)
 endif()
 
@@ -153,7 +153,7 @@ endif()
 ####################################
 
 if(RPP_TEST_TARGET)
-	message(STATUS "Creating test executable target.")
+	message(STATUS "Creating test executable target")
 
 	# compile test executable
 	add_executable(
@@ -163,7 +163,7 @@ if(RPP_TEST_TARGET)
 	# link to kernel library
 	target_link_libraries(rpp_test_sched rpp)
 else()
-	message(STATUS "Excluding test executable target from build.")
+	message(STATUS "Excluding test executable target from build")
 endif()
 
 ############################
@@ -175,9 +175,9 @@ find_program(DOXYGEN doxygen)
 
 # configure documentation target
 if(DOXYGEN STREQUAL "DOXYGEN-NOTFOUND")
-	message(STATUS "No Doxygen installation found. Documentation target will not be created.")
+	message(STATUS "No Doxygen installation found. Documentation target will not be created")
 else()
-	message(STATUS "Doxygen installation found. A documentation target will be created.")
+	message(STATUS "Doxygen installation found. A documentation target will be created")
 	
 	# get documentation directory
 	set(DOCS_ROOT_DIR ${RPP_ROOT_DIR}/docs)
@@ -203,11 +203,11 @@ else()
 	find_program(DOT dot)
 	# set dot existence flag and dot installation path
 	if(DOT STREQUAL "DOT-NOTFOUND")
-		message(STATUS "GraphViz dot tool not found. Configuring Doxygen to use native graphs.")
+		message(STATUS "GraphViz dot tool not found. Configuring Doxygen to use native graphs")
 		set(DOX_HAVE_DOT NO)
 		set(DOX_DOT_PATH "")
 	else()
-		message(STATUS "GraphViz dot tool found. Configuring Doxygen to use dot graphs.")
+		message(STATUS "GraphViz dot tool found. Configuring Doxygen to use dot graphs")
 		set(DOX_HAVE_DOT YES)
 		set(DOX_DOT_PATH DOT)
 	endif()
