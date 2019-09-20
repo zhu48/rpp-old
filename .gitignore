@@ -58,6 +58,9 @@ cmake_install.cmake
 CMakeFiles
 compile_commands.json
 
+# CMake-Generated Source Files
+portable_defs.hpp
+
 # CTest
 CTestCostData.txt
 

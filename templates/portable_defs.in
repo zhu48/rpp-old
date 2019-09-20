@@ -1,0 +1,12 @@
+#ifndef PORTABLE_DEFS_HPP
+#define PORTABLE_DEFS_HPP
+
+#include <cstddef>
+
+namespace portable {
+
+    constexpr std::size_t context_size = @RPP_CONTEXT_SIZE@;
+
+}
+
+#endif // #ifndef PORTABLE_DEFS_HPP

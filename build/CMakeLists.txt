@@ -54,6 +54,9 @@ endif()
 # get RPP repository root directory
 get_filename_component(RPP_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 
+# get header generation template directory
+set(RPP_TEMPLATE_DIR ${RPP_ROOT_DIR}/templates)
+
 # get top level directories containing code
 set(RPP_KERNEL_DIR ${RPP_ROOT_DIR}/kernel)
 
@@ -72,6 +75,15 @@ set(KERNEL_PORT_DIR ${KERNEL_SRC_DIR}/${RPP_TARGET_PLATFORM})
 
 # get directories containing kernel tests
 set(TEST_SRC_DIR ${RPP_ROOT_DIR}/test)
+
+###################################
+# Generate Headers from Templates #
+###################################
+
+configure_file(
+	"${RPP_TEMPLATE_DIR}/portable_defs.in"
+	"${KERNEL_INC_DIR}/portable_defs.hpp"
+)
 
 #########################
 # Gather Target Sources #
@@ -97,6 +109,7 @@ set(
 set(
 	K_INC_FILES
 		${KERNEL_INC_DIR}/portable.h
+		${KERNEL_INC_DIR}/portable_defs.hpp
 )
 set(
 	K_IPP_FILES
