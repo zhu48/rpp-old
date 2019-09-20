@@ -1,7 +1,7 @@
 #ifndef PORTABLE_H
 #define PORTABLE_H
 
-#include "portable_types.h"
+#include "portable_types.hpp"
 
 #ifdef __cplusplus
 namespace portable {

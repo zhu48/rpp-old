@@ -1,7 +1,7 @@
 #ifndef THREAD_HPP
 #define THREAD_HPP
 
-#include "portable_types.h"
+#include "portable_types.hpp"
 
 namespace rpp {
 

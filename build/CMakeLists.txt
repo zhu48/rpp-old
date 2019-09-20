@@ -85,7 +85,7 @@ set(
 		${KERNEL_PUB_INC_DIR}/scheduler.hpp
 		${KERNEL_PUB_INC_DIR}/queue_array.hpp
 		${KERNEL_PUB_INC_DIR}/dynamic_span.hpp
-		${KERNEL_PUB_INC_DIR}/portable_types.h
+		${KERNEL_PUB_INC_DIR}/portable_types.hpp
 )
 set(
 	K_API_IPP_FILES
