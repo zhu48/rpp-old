@@ -1,6 +1,8 @@
 #ifndef PORTABLE_TYPES_H
 #define PORTABLE_TYPES_H
 
+#include "portable_defs.hpp"
+
 namespace portable {
 
     /**
@@ -17,8 +19,7 @@ namespace portable {
      * \brief Thread context type.
      */
     typedef struct {
-        const void* stack_base; //!< Pointer to thread's allocated stack's base.
-        const void* frame_base; //!< Pointer to thread's current stack frame.
+        std::byte reserved[context_size];
     } context_t;
 
 }

@@ -82,7 +82,7 @@ set(TEST_SRC_DIR ${RPP_ROOT_DIR}/test)
 
 configure_file(
 	"${RPP_TEMPLATE_DIR}/portable_defs.in"
-	"${KERNEL_INC_DIR}/portable_defs.hpp"
+	"${KERNEL_PUB_INC_DIR}/portable_defs.hpp"
 )
 
 #########################
@@ -98,6 +98,7 @@ set(
 		${KERNEL_PUB_INC_DIR}/queue_array.hpp
 		${KERNEL_PUB_INC_DIR}/dynamic_span.hpp
 		${KERNEL_PUB_INC_DIR}/portable_types.hpp
+		${KERNEL_PUB_INC_DIR}/portable_defs.hpp
 )
 set(
 	K_API_IPP_FILES
@@ -109,7 +110,6 @@ set(
 set(
 	K_INC_FILES
 		${KERNEL_INC_DIR}/portable.h
-		${KERNEL_INC_DIR}/portable_defs.hpp
 )
 set(
 	K_IPP_FILES
