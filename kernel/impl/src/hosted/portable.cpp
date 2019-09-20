@@ -6,11 +6,14 @@ using namespace portable;
 
 namespace {
 
-    void store_handle( context_t* const context, std::thread::native_handle_type handle ) {
+    void verify_static_asserts() {
         static_assert(
-			sizeof( decltype( *context ) ) >= sizeof( decltype( handle ) ),
-			"context_t is too small to hold native thread handle"
-		);
+            sizeof( context_t ) >= sizeof( std::thread::native_handle_type ),
+            "context_t is too small to hold native thread handle"
+        );
+    }
+
+    void store_handle( context_t* const context, std::thread::native_handle_type handle ) {
         *reinterpret_cast<std::thread::native_handle_type*>( context ) = handle;
     }
 
