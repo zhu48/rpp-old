@@ -80,9 +80,18 @@ set(TEST_SRC_DIR ${RPP_ROOT_DIR}/test)
 # Generate Headers from Templates #
 ###################################
 
-configure_file(
-	"${RPP_TEMPLATE_DIR}/portable_defs.in"
-	"${KERNEL_PUB_INC_DIR}/portable_defs.hpp"
+add_custom_command(
+	OUTPUT
+		${KERNEL_PUB_INC_DIR}/portable_defs.hpp
+	COMMAND
+		${CMAKE_COMMAND}
+			-DRPP_TARGET_PLATFORM=${RPP_TARGET_PLATFORM}
+			-DKERNEL_PUB_INC_DIR=${KERNEL_PUB_INC_DIR}
+			-DRPP_TEMPLATE_DIR=${RPP_TEMPLATE_DIR}
+			-P ${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
+	DEPENDS
+		${RPP_TEMPLATE_DIR}/portable_defs.in
+		${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
 )
 
 #########################
