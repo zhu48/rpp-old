@@ -38,13 +38,13 @@ void fast_interrupt_request( void ) {
 
 void exception_vector_table( void ) __attribute__ ((naked)) {
     __ASM volatile(
-        "B   reset                  \n"
-        "B   undefined_instruction  \n"
-        "B   supervisor_call        \n"
-        "B   prefetch_abort         \n"
-        "B   data_abort             \n"
+        "B   reset                  \n" // branch to reset handler
+        "B   undefined_instruction  \n" // branch to undefined instruction trap handler
+        "B   supervisor_call        \n" // branch to supervisor call handler
+        "B   prefetch_abort         \n" // branch to prefetch abort handler
+        "B   data_abort             \n" // branch to data abort handler
         "NOP                        \n"
-        "B   interrupt_request      \n"
-        "B   fast_interrupt_request \n"
+        "B   interrupt_request      \n" // branch to IRQ handler
+        "B   fast_interrupt_request \n" // branch to FIQ handler
     );
 }
