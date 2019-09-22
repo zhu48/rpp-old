@@ -53,9 +53,9 @@ endif()
 
 # set required platform-dependent constants
 if(RPP_TARGET_PLATFORM STREQUAL "xc7z")
-    set(RPP_CONTEXT_SIZE "128" CACHE STRING "Size of thread context block")
+    set(RPP_CONTEXT_SIZE "4" CACHE STRING "Size of thread context block")
 else()
-    set(RPP_CONTEXT_SIZE "8"   CACHE STRING "Size of thread context block")
+    set(RPP_CONTEXT_SIZE "4"   CACHE STRING "Size of thread context block")
 endif()
 
 ########################

@@ -1,6 +1,20 @@
+#include <cstdint>
+
 #include "portable.h"
 
 using namespace portable;
+
+namespace {
+
+    struct context_t_impl {
+        std::uint32_t sp;
+    };
+
+    void assert_invariants( void ) {
+        static_assert( sizeof( context_t_impl ) == context_size, "context size mismatch" );
+    }
+
+}
 
 void portable::initialize_stack(
     void* const      stack,
