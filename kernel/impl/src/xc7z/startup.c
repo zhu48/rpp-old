@@ -1,4 +1,8 @@
- __attribute__ ((naked)) void reset( void ) {
+#include <stddef.h>
+
+extern int main( int argc, char* argv[] );
+
+__attribute__ ((naked)) void reset( void ) {
     __asm__ volatile(
         // disable all interrupts
         "    CPSID if                    \n" // disable all IRQ and FIQ interrupts
@@ -47,4 +51,8 @@ __attribute__ ((naked)) void exception_vector_table( void ) {
         "B   interrupt_request      \n" // branch to IRQ handler
         "B   fast_interrupt_request \n" // branch to FIQ handler
     );
+}
+
+void _start( void ) {
+    main( 0, NULL );
 }
