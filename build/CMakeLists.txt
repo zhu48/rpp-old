@@ -137,6 +137,7 @@ set(
 	K_PORT_FILES
 		${KERNEL_PORT_DIR}/portable.cpp
 		${KERNEL_PORT_DIR}/startup.c
+		${KERNEL_PORT_DIR}/mem.c
 )
 
 # all test files
