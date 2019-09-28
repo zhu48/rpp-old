@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.3)
 # Set Project-Level Configurations #
 ####################################
 
-project(RPP CXX)
+project(RPP CXX C ASM)
 
 # set language standards
 set(CMAKE_C_STANDARD            17)
