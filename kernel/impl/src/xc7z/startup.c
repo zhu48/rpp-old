@@ -16,31 +16,31 @@ __attribute__ ((naked)) void reset( void ) {
     );
 }
 
-void undefined_instruction( void ) {
+__attribute__ ((interrupt)) void undefined_instruction( void ) {
 
 }
 
-void supervisor_call( void ) {
+__attribute__ ((interrupt)) void supervisor_call( void ) {
     
 }
 
-void prefetch_abort( void ) {
+__attribute__ ((interrupt)) void prefetch_abort( void ) {
     
 }
 
-void data_abort( void ) {
+__attribute__ ((interrupt)) void data_abort( void ) {
     
 }
 
-void interrupt_request( void ) {
+__attribute__ ((interrupt)) void interrupt_request( void ) {
     
 }
 
-void fast_interrupt_request( void ) {
+__attribute__ ((interrupt)) void fast_interrupt_request( void ) {
     
 }
 
-__attribute__ ((naked)) void exception_vector_table( void ) {
+__attribute__ ((naked,__section__(".reset_table"))) void exception_vector_table( void ) {
     __asm__ volatile(
         "B   reset                  \n" // branch to reset handler
         "B   undefined_instruction  \n" // branch to undefined instruction trap handler
