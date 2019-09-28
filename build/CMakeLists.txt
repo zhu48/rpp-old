@@ -75,28 +75,10 @@ set(KERNEL_IPP_DIR ${KERNEL_INC_DIR}/ipp)
 set(KERNEL_SRC_DIR ${KERNEL_IMP_DIR}/src)
 
 # get directory containing code specific to the selected platform
-set(KERNEL_PORT_DIR ${KERNEL_SRC_DIR}/${RPP_TARGET_PLATFORM})
+set(HAL_DIR ${RPP_ROOT_DIR}/hal)
 
 # get directories containing kernel tests
 set(TEST_SRC_DIR ${RPP_ROOT_DIR}/test)
-
-###################################
-# Generate Headers from Templates #
-###################################
-
-add_custom_command(
-	OUTPUT
-		${KERNEL_PUB_INC_DIR}/portable_defs.hpp
-	COMMAND
-		${CMAKE_COMMAND}
-			-DRPP_TARGET_PLATFORM=${RPP_TARGET_PLATFORM}
-			-DKERNEL_PUB_INC_DIR=${KERNEL_PUB_INC_DIR}
-			-DRPP_TEMPLATE_DIR=${RPP_TEMPLATE_DIR}
-			-P ${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
-	DEPENDS
-		${RPP_TEMPLATE_DIR}/portable_defs.in
-		${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
-)
 
 #########################
 # Gather Target Sources #
@@ -110,8 +92,6 @@ set(
 		${KERNEL_PUB_INC_DIR}/scheduler.hpp
 		${KERNEL_PUB_INC_DIR}/queue_array.hpp
 		${KERNEL_PUB_INC_DIR}/dynamic_span.hpp
-		${KERNEL_PUB_INC_DIR}/portable_types.hpp
-		${KERNEL_PUB_INC_DIR}/portable_defs.hpp
 )
 set(
 	K_API_IPP_FILES
@@ -122,7 +102,6 @@ set(
 )
 set(
 	K_INC_FILES
-		${KERNEL_INC_DIR}/portable.h
 )
 set(
 	K_IPP_FILES
@@ -133,18 +112,19 @@ set(
 		${KERNEL_SRC_DIR}/thread.cpp
 		${KERNEL_SRC_DIR}/scheduler.cpp
 )
-set(
-	K_PORT_FILES
-		${KERNEL_PORT_DIR}/portable.cpp
-		${KERNEL_PORT_DIR}/startup.c
-		${KERNEL_PORT_DIR}/mem.c
-)
 
 # all test files
 set(
 	TEST_SCHED_SRC_FILES
 		${TEST_SRC_DIR}/test_sched.cpp
 )
+
+#######################
+# Gather Dependencies #
+#######################
+
+# hardware abstraction layer
+add_subdirectory(${HAL_DIR} ${HAL_DIR}/build)
 
 ###################################
 # Configure Kernel Library Target #
@@ -159,7 +139,6 @@ add_library(
 		${K_INC_FILES}
 		${K_IPP_FILES}
 		${K_SRC_FILES}
-		${K_PORT_FILES}
 )
 # set include directories
 target_include_directories(
@@ -171,10 +150,8 @@ target_include_directories(
 		${KERNEL_INC_DIR}
 		${KERNEL_IPP_DIR}
 )
-# link to pthreads if targeting Unix host
-if(RPP_PTHREADS)
-	target_link_libraries(rpp Threads::Threads)
-endif()
+# link to HAL
+target_link_libraries(rpp hal)
 
 ####################################
 # Configure Test Executable Target #
@@ -222,7 +199,6 @@ else()
 			${K_INC_FILES}
 			${K_IPP_FILES}
 			${K_SRC_FILES}
-			${K_PORT_FILES}
 	)
 	# convert CMake files list to a space-separated list for Doxygen
 	string(REPLACE ";" " " DOX_INPUT "${DOCUMENTED_FILES}")
