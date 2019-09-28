@@ -11,16 +11,15 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=hard")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpu=vfpv3")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=armv7-a")
 
-set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "")
-set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -nostartfiles" CACHE STRING "CFLAGS")
+set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "ASM compile flags")
+set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}" CACHE STRING "C compile flags")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=vfpv3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv7-a")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -nostartfiles")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "CXXFLAGS")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "CXX compile flags")
 
 # toolchain executable prefix
 set(CROSS_COMPILE arm-none-eabi-)
@@ -41,7 +40,7 @@ set(
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # disable various system calls
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -nodefaultlibs")
 
 # do not search for binaries on compile host
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)

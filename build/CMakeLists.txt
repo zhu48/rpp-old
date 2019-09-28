@@ -8,10 +8,14 @@ cmake_minimum_required(VERSION 3.3)
 project(RPP CXX C ASM)
 
 # set language standards
-set(CMAKE_C_STANDARD            17)
-set(CMAKE_CXX_STANDARD          17)
-set(CMAKE_C_STANDARD_REQUIRED   TRUE)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_C_STANDARD                    17)
+set(CMAKE_CXX_STANDARD                  17)
+set(CMAKE_C_STANDARD_REQUIRED           TRUE)
+set(CMAKE_CXX_STANDARD_REQUIRED         TRUE)
+set(CMAKE_C_IMPLICIT_LINK_LIBRARIES     "")
+set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES   "")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES   "")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "")
 
 # set the policy to enable inter-procedural optimization if available
 if(POLICY CMP0069)
