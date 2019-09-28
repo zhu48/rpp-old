@@ -1,19 +1,19 @@
+#include <array>
 #include <tuple>
-#include <iostream>
 
 #include "scheduler.hpp"
 
-void print_tid( void* const arg ) {
-    std::cout << "thread " << *static_cast<int*>( arg ) << std::endl;
+void do_work( void* const arg ) {
+    int i = *reinterpret_cast<int*>( arg );
 }
 
 int main( int argc, char* argv[] ) {
     std::array<int,4> args = { 0, 1, 2, 3 };
     std::array<rpp::thread,4> thrd_arr = {
-        rpp::thread( print_tid, &(args[0]), nullptr ),
-        rpp::thread( print_tid, &(args[1]), nullptr ),
-        rpp::thread( print_tid, &(args[2]), nullptr ),
-        rpp::thread( print_tid, &(args[3]), nullptr )
+        rpp::thread( do_work, &(args[0]), &args[0] ),
+        rpp::thread( do_work, &(args[1]), &args[1] ),
+        rpp::thread( do_work, &(args[2]), &args[2] ),
+        rpp::thread( do_work, &(args[3]), &args[3] )
     };
     std::array<rpp::decision_data,4> dec_arr = {
         rpp::decision_data{ &(thrd_arr[0]), 0 },
