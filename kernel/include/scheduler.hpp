@@ -3,8 +3,6 @@
 
 #include <cstdint>
 
-#include <queue>
-
 #include "queue_array.hpp"
 #include "dynamic_span.hpp"
 
