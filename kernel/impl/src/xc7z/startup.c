@@ -1,5 +1,5 @@
-void reset( void ) __attribute__ ((naked)) {
-    __ASM volatile(
+ __attribute__ ((naked)) void reset( void ) {
+    __asm__ volatile(
         // disable all interrupts
         "    CPSID if                    \n" // disable all IRQ and FIQ interrupts
         // if this is not core zero, sleep until an interrupt handler makes this core do something
@@ -36,8 +36,8 @@ void fast_interrupt_request( void ) {
     
 }
 
-void exception_vector_table( void ) __attribute__ ((naked)) {
-    __ASM volatile(
+__attribute__ ((naked)) void exception_vector_table( void ) {
+    __asm__ volatile(
         "B   reset                  \n" // branch to reset handler
         "B   undefined_instruction  \n" // branch to undefined instruction trap handler
         "B   supervisor_call        \n" // branch to supervisor call handler
