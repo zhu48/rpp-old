@@ -6,7 +6,7 @@ set(CMAKE_SYSTEM_NAME      Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 # specify core and FPU architectures
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-a9")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=hard")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpu=vfpv3")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=armv7-a")
@@ -14,7 +14,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=armv7-a")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "")
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -nostartfiles" CACHE STRING "CFLAGS")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-a9")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=vfpv3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv7-a")
@@ -26,6 +26,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "CXXFLAGS")
 set(CROSS_COMPILE arm-none-eabi-)
 
 # set compiler
+set(
+    CMAKE_C_COMPILER
+        "${TC_PATH}${CROSS_COMPILE}gcc${CMAKE_EXECUTABLE_SUFFIX}"
+    CACHE FILEPATH "" FORCE
+)
 set(
     CMAKE_CXX_COMPILER
         "${TC_PATH}${CROSS_COMPILE}g++${CMAKE_EXECUTABLE_SUFFIX}"
