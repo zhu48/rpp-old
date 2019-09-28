@@ -5,7 +5,7 @@
 
 namespace portable {
 
-    constexpr std::size_t context_size = @RPP_CONTEXT_SIZE@;
+    constexpr std::size_t context_size = @HAL_CONTEXT_SIZE@;
 
 }
 

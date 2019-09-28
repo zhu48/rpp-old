@@ -29,9 +29,9 @@ add_custom_command(
         ${HAL_INC_DIR}/portable_defs.hpp
     COMMAND
         ${CMAKE_COMMAND}
-            -DRPP_TARGET_PLATFORM=${RPP_TARGET_PLATFORM}
-            -DRPP_INC_DIR=${HAL_INC_DIR}
-            -DRPP_TEMPLATE_DIR=${HAL_TEMPLATE_DIR}
+            -DHAL_TARGET_PLATFORM=${RPP_TARGET_PLATFORM}
+            -DHAL_INC_DIR=${HAL_INC_DIR}
+            -DHAL_TEMPLATE_DIR=${HAL_TEMPLATE_DIR}
             -P ${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
     DEPENDS
         ${HAL_TEMPLATE_DIR}/portable_defs.in
