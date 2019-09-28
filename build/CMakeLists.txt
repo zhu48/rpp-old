@@ -124,7 +124,7 @@ set(
 #######################
 
 # hardware abstraction layer
-add_subdirectory(${HAL_DIR} ${HAL_DIR}/build)
+add_subdirectory(${HAL_DIR} ${CMAKE_CURRENT_BINARY_DIR}/hal)
 
 ###################################
 # Configure Kernel Library Target #
