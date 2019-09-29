@@ -7,6 +7,8 @@ MEMORY {
     PGRAM (rw) : ORIGIN = PGRAM_BASE, LENGTH = PGRAM_LENG
 }
 
+ENTRY(exception_vector_table)
+
 SECTIONS {
     .reset : {
         *(.reset_table)
