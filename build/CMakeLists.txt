@@ -151,7 +151,7 @@ target_include_directories(
 		${KERNEL_IPP_DIR}
 )
 # link to HAL
-target_link_libraries(rpp hal)
+target_link_libraries(rpp PRIVATE hal)
 
 ####################################
 # Configure Test Executable Target #
@@ -166,7 +166,7 @@ if(RPP_TEST_TARGET)
 			${TEST_SCHED_SRC_FILES}
 	)
 	# link to kernel library
-	target_link_libraries(rpp_test_sched rpp)
+	target_link_libraries(rpp_test_sched PRIVATE rpp)
 else()
 	message(STATUS "Excluding test executable target from build")
 endif()
