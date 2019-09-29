@@ -32,9 +32,9 @@ set(HAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${RPP_TARGET_PLATFORM})
 
 set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
 
-######################
-# Derive Directories #
-######################
+###############################
+# Detect Custom Linker Script #
+###############################
 
 # use SoC-specific linker script path
 set(HAL_LD_TEMPLATE ${HAL_TEMPLATE_DIR}/${RPP_TARGET_PLATFORM}/link.ld.in)
