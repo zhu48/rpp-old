@@ -92,5 +92,5 @@ set_target_properties(
 )
 # link to pthreads if targeting Unix host
 if(RPP_PTHREADS)
-    target_link_libraries(rpp Threads::Threads)
+	target_link_libraries(hal Threads::Threads)
 endif()
