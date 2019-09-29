@@ -32,6 +32,11 @@ set(
     CACHE FILEPATH "" FORCE
 )
 set(
+    CMAKE_C_PREPROCESSOR
+        "${TC_PATH}${CROSS_COMPILE}cpp${CMAKE_EXECUTABLE_SUFFIX}"
+    CACHE FILEPATH "" FORCE
+)
+set(
     CMAKE_CXX_COMPILER
         "${TC_PATH}${CROSS_COMPILE}g++${CMAKE_EXECUTABLE_SUFFIX}"
     CACHE FILEPATH "" FORCE
@@ -41,7 +46,11 @@ set(
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # disable various system calls
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -nodefaultlibs")
+set(
+    CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -nodefaultlibs"
+    CACHE STRING "Linker flags"
+)
 
 # do not search for binaries on compile host
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)

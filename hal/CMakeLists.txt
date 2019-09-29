@@ -32,6 +32,19 @@ set(HAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${RPP_TARGET_PLATFORM})
 
 set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
 
+######################
+# Derive Directories #
+######################
+
+# use SoC-specific linker script path
+set(HAL_LD_TEMPLATE ${HAL_TEMPLATE_DIR}/${RPP_TARGET_PLATFORM}/link.ld.in)
+if(EXISTS ${HAL_LD_TEMPLATE})
+    set(HAL_CUSTOM_LD TRUE)
+else()
+    set(HAL_CuSTOM_LD FALSE)
+endif()
+set(HAL_CUSTOM_LD ${HAL_CUSTOM_LD} PARENT_SCOPE)
+
 ###################################
 # Generate Headers from Templates #
 ###################################
@@ -93,4 +106,23 @@ set_target_properties(
 # link to pthreads if targeting Unix host
 if(RPP_PTHREADS)
 	target_link_libraries(hal Threads::Threads)
+endif()
+# pre-process linker script if it exists
+if(HAL_CUSTOM_LD)
+    message(STATUS "Using custom linker script")
+
+    set(HAL_LD ${HAL_SRC_DIR}/link.ld)
+    add_custom_command(
+        TARGET hal PRE_LINK
+        COMMAND
+            ${CMAKE_C_PREPROCESSOR}
+                ${HAL_LD_TEMPLATE} -P
+                -o ${HAL_LD}
+                -I ${HAL_INC_DIR}/${RPP_TARGET_PLATFORM}
+        DEPENDS
+            ${HAL_LD_TEMPLATE}
+    )
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${HAL_LD}" PARENT_SCOPE)
+else()
+    message(STATUS "Using default linker script")
 endif()
