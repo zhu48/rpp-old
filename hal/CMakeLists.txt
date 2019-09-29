@@ -5,10 +5,22 @@ cmake_minimum_required(VERSION 3.3)
 # Set Project-Level Configurations #
 ####################################
 
+project(HAL CXX C ASM)
+
+# set language standards
+set(CMAKE_C_STANDARD                    11)
+set(CMAKE_CXX_STANDARD                  17)
+set(CMAKE_C_STANDARD_REQUIRED           TRUE)
+set(CMAKE_CXX_STANDARD_REQUIRED         TRUE)
+set(CMAKE_C_IMPLICIT_LINK_LIBRARIES     "")
+set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES   "")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES   "")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "")
+
 # find threading library if required
 if(RPP_PTHREADS)
-	set(THREADS_PREFER_PTHREAD_FLAG ON)
-	find_package(Threads REQUIRED)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
 endif()
 
 ######################
@@ -80,5 +92,5 @@ set_target_properties(
 )
 # link to pthreads if targeting Unix host
 if(RPP_PTHREADS)
-	target_link_libraries(rpp Threads::Threads)
+    target_link_libraries(rpp Threads::Threads)
 endif()

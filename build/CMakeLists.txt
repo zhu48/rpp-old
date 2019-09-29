@@ -5,16 +5,12 @@ cmake_minimum_required(VERSION 3.3)
 # Set Project-Level Configurations #
 ####################################
 
-project(RPP CXX C ASM)
+project(RPP CXX)
 
 # set language standards
-set(CMAKE_C_STANDARD                    11)
 set(CMAKE_CXX_STANDARD                  17)
-set(CMAKE_C_STANDARD_REQUIRED           TRUE)
 set(CMAKE_CXX_STANDARD_REQUIRED         TRUE)
-set(CMAKE_C_IMPLICIT_LINK_LIBRARIES     "")
 set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES   "")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES   "")
 set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "")
 
 # set the policy to enable inter-procedural optimization if available
@@ -43,12 +39,6 @@ if(NOT DEFINED IPO_SUPPORTED)
 	
 	set(IPO_SUPPORTED ${IPO} CACHE STRING "Inter-procedural optimization support")
 	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${IPO} CACHE INTERNAL "" FORCE)
-endif()
-
-# find threading library if required
-if(RPP_PTHREADS)
-	set(THREADS_PREFER_PTHREAD_FLAG ON)
-	find_package(Threads REQUIRED)
 endif()
 
 ######################
