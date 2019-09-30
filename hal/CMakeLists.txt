@@ -28,7 +28,10 @@ endif()
 ######################
 
 set(HAL_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(HAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${RPP_TARGET_PLATFORM})
+set(HAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${HAL_TARGET_ARCH})
+
+set(HAL_ARCH_INC_DIR     ${HAL_INC_DIR}/${HAL_TARGET_ARCH})
+set(HAL_PLATFORM_INC_DIR ${HAL_INC_DIR}/${HAL_TARGET_PLATFORM})
 
 set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
 
@@ -37,7 +40,7 @@ set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
 ###############################
 
 # use SoC-specific linker script path
-set(HAL_LD_TEMPLATE ${HAL_TEMPLATE_DIR}/${RPP_TARGET_PLATFORM}/link.ld.in)
+set(HAL_LD_TEMPLATE ${HAL_TEMPLATE_DIR}/${HAL_TARGET_ARCH}/link_template.ld)
 if(EXISTS ${HAL_LD_TEMPLATE})
     set(HAL_CUSTOM_LD TRUE)
 else()
@@ -45,16 +48,17 @@ else()
 endif()
 set(HAL_CUSTOM_LD ${HAL_CUSTOM_LD} PARENT_SCOPE)
 
-###################################
-# Generate Headers from Templates #
-###################################
+#################################
+# Generate Files from Templates #
+#################################
 
+# generate port-specific definitions
 add_custom_command(
     OUTPUT
         ${HAL_INC_DIR}/portable_defs.hpp
     COMMAND
         ${CMAKE_COMMAND}
-            -DHAL_TARGET_PLATFORM=${RPP_TARGET_PLATFORM}
+            -DHAL_TARGET_ARCH=${HAL_TARGET_ARCH}
             -DHAL_INC_DIR=${HAL_INC_DIR}
             -DHAL_TEMPLATE_DIR=${HAL_TEMPLATE_DIR}
             -P ${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
@@ -62,6 +66,27 @@ add_custom_command(
         ${HAL_TEMPLATE_DIR}/portable_defs.in
         ${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
 )
+
+# pre-process linker script if it exists
+if(HAL_CUSTOM_LD)
+    message(STATUS "Using custom linker script")
+
+    set(HAL_LD ${HAL_SRC_DIR}/link.ld)
+    add_custom_command(
+        OUTPUT
+            ${HAL_LD}
+        COMMAND
+            ${CMAKE_C_PREPROCESSOR}
+                ${HAL_LD_TEMPLATE} -P
+                -o ${HAL_LD}
+                -I ${HAL_PLATFORM_INC_DIR}
+                -I ${HAL_ARCH_INC_DIR}
+        DEPENDS
+            ${HAL_LD_TEMPLATE}
+    )
+else()
+    message(STATUS "Using default linker script")
+endif()
 
 #########################
 # Gather Target Sources #
@@ -73,6 +98,16 @@ set(
         ${HAL_INC_DIR}/portable_types.hpp
         ${HAL_INC_DIR}/portable.h
 )
+if()
+    set(
+        HAL_PLATFORM_INC_FILES
+            ${HAL_PLATFORM_INC_DIR}/mem_map.h
+    )
+    set(
+        HAL_ARCH_INC_FILES
+            ${HAL_ARCH_INC_DIR}/mem_load.h
+    )
+endif()
 set(
     HAL_SRC_FILES
         ${HAL_SRC_DIR}/mem.c
@@ -89,6 +124,8 @@ add_library(
     hal
     STATIC
         ${HAL_INC_FILES}
+        ${HAL_ARCH_INC_FILES}
+        ${HAL_PLATFORM_INC_FILES}
         ${HAL_SRC_FILES}
 )
 # set include directories
@@ -96,6 +133,9 @@ target_include_directories(
     hal
     PUBLIC
         ${HAL_INC_DIR}
+    PRIVATE
+        ${HAL_PLATFORM_INC_DIR}
+        ${HAL_ARCH_INC_DIR}
 )
 # disable IPO to prevent functions in mem.c from being optimized out
 set_target_properties(
@@ -107,22 +147,9 @@ set_target_properties(
 if(RPP_PTHREADS)
 	target_link_libraries(hal Threads::Threads)
 endif()
-# pre-process linker script if it exists
-if(HAL_CUSTOM_LD)
-    message(STATUS "Using custom linker script")
 
-    set(HAL_LD ${HAL_SRC_DIR}/link.ld)
-    add_custom_command(
-        TARGET hal PRE_LINK
-        COMMAND
-            ${CMAKE_C_PREPROCESSOR}
-                ${HAL_LD_TEMPLATE} -P
-                -o ${HAL_LD}
-                -I ${HAL_INC_DIR}/${RPP_TARGET_PLATFORM}
-        DEPENDS
-            ${HAL_LD_TEMPLATE}
-    )
+# add custom linker script if necessary
+if(HAL_CUSTOM_LD)
+    add_custom_target(linker DEPENDS ${HAL_LD})
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${HAL_LD}" PARENT_SCOPE)
-else()
-    message(STATUS "Using default linker script")
 endif()

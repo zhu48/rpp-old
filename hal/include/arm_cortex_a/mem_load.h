@@ -16,7 +16,7 @@
 #define DARAM_LENG ( DARAM_END - DARAM_BASE )
 
 #define PGRAM_BASE ( DARAM_END )
-#define PGRAM_END  ( PGRAM_BASE )
+#define PGRAM_END  ( OCM_LOW_END )
 #define PGRAM_LENG ( PGRAM_END - PGRAM_BASE )
 
 #endif // #ifndef MEM_LOAD_H

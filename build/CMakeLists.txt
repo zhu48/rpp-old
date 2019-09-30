@@ -114,6 +114,12 @@ set(
 #######################
 
 # hardware abstraction layer
+set(HAL_TARGET_PLATFORM ${RPP_TARGET_PLATFORM})
+if(RPP_TARGET_PLATFORM STREQUAL "xc7z")
+	set(HAL_TARGET_ARCH "arm_cortex_a")
+else()
+	set(HAL_TARGET_ARCH ${HAL_TARGET_PLATFORM})
+endif()
 add_subdirectory(${HAL_DIR} ${CMAKE_CURRENT_BINARY_DIR}/hal)
 
 ###################################
@@ -141,7 +147,11 @@ target_include_directories(
 		${KERNEL_IPP_DIR}
 )
 # link to HAL
-target_link_libraries(rpp PRIVATE hal)
+target_link_libraries(rpp PUBLIC hal)
+# use custom linker script if it exists
+if(TARGET linker)
+	add_dependencies(rpp linker)
+endif()
 
 ####################################
 # Configure Test Executable Target #
@@ -156,7 +166,7 @@ if(RPP_TEST_TARGET)
 			${TEST_SCHED_SRC_FILES}
 	)
 	# link to kernel library
-	target_link_libraries(rpp_test_sched PRIVATE rpp)
+	target_link_libraries(rpp_test_sched PUBLIC rpp)
 else()
 	message(STATUS "Excluding test executable target from build")
 endif()
