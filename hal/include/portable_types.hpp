@@ -1,5 +1,5 @@
-#ifndef PORTABLE_TYPES_H
-#define PORTABLE_TYPES_H
+#ifndef PORTABLE_TYPES_HPP
+#define PORTABLE_TYPES_HPP
 
 #include "portable_defs.hpp"
 
@@ -8,7 +8,7 @@ namespace portable {
     /**
      * \brief Type used as the thread entry point function argument.
      */
-    typedef void* const entry_fn_arg_t;
+    using entry_fn_arg_t = void* const;
 
     /**
      * \brief Function type used as entry point to thread execution.
@@ -18,10 +18,10 @@ namespace portable {
     /**
      * \brief Thread context type.
      */
-    typedef struct {
+    struct context_t {
         std::byte reserved[context_size];
-    } context_t;
+    };
 
 }
 
-#endif // #ifndef PORTABLE_TYPES_H
+#endif // #ifndef PORTABLE_TYPES_HPP

@@ -1,4 +1,4 @@
-#include "portable.h"
+#include "portable.hpp"
 
 #include "thread.hpp"
 
@@ -11,9 +11,9 @@ thread::thread(
 ) noexcept :
     status( status_t::ready )
 {
-    portable::initialize_stack( stack, entry, arg, &context );
+    portable::initialize_stack( stack, entry, arg, context );
 }
 
 void thread::execute( void ) {
-    portable::switch_context( &context );
+    portable::switch_context( context );
 }

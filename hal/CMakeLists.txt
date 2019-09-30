@@ -96,7 +96,7 @@ set(
     HAL_INC_FILES
         ${HAL_INC_DIR}/portable_defs.hpp
         ${HAL_INC_DIR}/portable_types.hpp
-        ${HAL_INC_DIR}/portable.h
+        ${HAL_INC_DIR}/portable.hpp
 )
 if()
     set(
