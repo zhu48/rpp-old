@@ -98,16 +98,14 @@ set(
         ${HAL_INC_DIR}/portable_types.hpp
         ${HAL_INC_DIR}/portable.hpp
 )
-if()
-    set(
-        HAL_PLATFORM_INC_FILES
-            ${HAL_PLATFORM_INC_DIR}/mem_map.h
-    )
-    set(
-        HAL_ARCH_INC_FILES
-            ${HAL_ARCH_INC_DIR}/mem_load.h
-    )
-endif()
+set(
+    HAL_PLATFORM_INC_FILES
+        ${HAL_PLATFORM_INC_DIR}/mem_map.h
+)
+set(
+    HAL_ARCH_INC_FILES
+        ${HAL_ARCH_INC_DIR}/mem_load.h
+)
 set(
     HAL_SRC_FILES
         ${HAL_SRC_DIR}/mem.c
