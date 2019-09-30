@@ -5,6 +5,7 @@
 extern int main( int argc, char* argv[] );
 
 __attribute__ ((naked)) void reset( void ) {
+    // In a multi-core system, enable non-primary cores to sleep.
     __asm__ volatile(
         // disable all interrupts
         "    CPSID if                    \n" // disable all IRQ and FIQ interrupts
@@ -14,8 +15,25 @@ __attribute__ ((naked)) void reset( void ) {
         "sleep:                          \n"
         "    WFINE                       \n" // if this is not core zero, sleep until interrupted
         "    BNE   sleep                 \n" // keep sleeping until a handler re-directs this core
-        // initialize memory system
     );
+
+    // Initialize the memory system, including the MMU.
+    L1C_DisableCaches();
+    L1C_InvalidateBTAC();
+    L1C_InvalidateICacheAll();
+    L1C_CleanInvalidateDCacheAll();
+    MMU_Disable();
+    MMU_InvalidateTLB();
+
+    // Initialize core mode stacks and registers.
+    // Initialize any critical I/O devices.
+    // Perform any necessary initialization of NEON or VFP.
+    __FPU_Enable();
+
+    // Enable interrupts.
+    // Change core mode or state.
+    // Handle any set-up required for the Secure world (see Chapter 21).
+    // Call the main() application.
 }
 
 __attribute__ ((interrupt)) void undefined_instruction( void ) {
