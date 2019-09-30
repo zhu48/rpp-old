@@ -1,5 +1,7 @@
 #include <stddef.h>
 
+#include <ARMCA9.h>
+
 extern int main( int argc, char* argv[] );
 
 __attribute__ ((naked)) void reset( void ) {

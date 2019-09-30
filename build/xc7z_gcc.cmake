@@ -6,18 +6,22 @@ set(CMAKE_SYSTEM_NAME      Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 # specify core and FPU architectures
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-a9")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=armv7-a")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=cortex-a9")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=hard")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpu=vfpv3")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=armv7-a")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpu=neon-vfpv3")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -funsafe-math-optimizations")
 
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "ASM compile flags")
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}" CACHE STRING "C compile flags")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=cortex-a9")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv7-a")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=cortex-a9")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfloat-abi=hard")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=vfpv3")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv7-a")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=neon-vfpv3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -funsafe-math-optimizations")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "CXX compile flags")

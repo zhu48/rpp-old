@@ -17,6 +17,24 @@ set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES   "")
 set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES   "")
 set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "")
 
+# use CMSIS processor abstraction headers for ARM processors
+set(
+    HAL_TARGET_ARCH_ARM_OPTS
+        "arm_cortex_a"
+)
+if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
+    message(STATUS "Using CMSIS CPU abstraction headers")
+
+    if(EXISTS ${CMSIS_PATH})
+        set(HAL_USE_CMSIS TRUE)
+    else()
+        message(FATAL_ERROR "Could not find CMSIS repository at ${CMSIS_PATH}")
+    endif()
+else()
+    message(STATUS "Using CMSIS CPU abstraction headers")
+    set(HAL_USE_CMSIS FALSE)
+endif()
+
 # find threading library if required
 if(RPP_PTHREADS)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -34,6 +52,16 @@ set(HAL_ARCH_INC_DIR     ${HAL_INC_DIR}/${HAL_TARGET_ARCH})
 set(HAL_PLATFORM_INC_DIR ${HAL_INC_DIR}/${HAL_TARGET_PLATFORM})
 
 set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
+
+if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
+    set(CMSIS_CMSIS_DIR ${CMSIS_PATH}/CMSIS)
+
+    set(CMSIS_ARCH_DIR ${CMSIS_PATH}/Device/ARM/ARMCA9)
+
+    set(CMSIS_CORE_INC_DIR   ${CMSIS_CMSIS_DIR}/Core_A/Include)
+    set(CMSIS_CONFIG_INC_DIR ${CMSIS_ARCH_DIR}/Config)
+    set(CMSIS_DEVICE_INC_DIR ${CMSIS_ARCH_DIR}/Include)
+endif()
 
 ###############################
 # Detect Custom Linker Script #
@@ -113,6 +141,23 @@ set(
         ${HAL_SRC_DIR}/startup.c
 )
 
+if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
+    set(
+        CMSIS_CORE_INC_FILES
+            ${CMSIS_CORE_INC_DIR}/cmsis_compiler.h
+            ${CMSIS_CORE_INC_DIR}/cmsis_gcc.h
+            ${CMSIS_CORE_INC_DIR}/core_ca.h
+    )
+    set(
+        CMSIS_CONFIG_INC_FILES
+            ${CMSIS_CONFIG_INC_DIR}/system_ARMCA9.h
+    )
+    set(
+        CMSIS_DEVICE_INC_FILES
+            ${CMSIS_DEVICE_INC_DIR}/ARMCA9.h
+    )
+endif()
+
 ################################
 # Configure HAL Library Target #
 ################################
@@ -125,6 +170,9 @@ add_library(
         ${HAL_ARCH_INC_FILES}
         ${HAL_PLATFORM_INC_FILES}
         ${HAL_SRC_FILES}
+        ${CMSIS_CORE_INC_FILES}
+        ${CMSIS_CONFIG_INC_FILES}
+        ${CMSIS_DEVICE_INC_FILES}
 )
 # set include directories
 target_include_directories(
@@ -134,6 +182,9 @@ target_include_directories(
     PRIVATE
         ${HAL_PLATFORM_INC_DIR}
         ${HAL_ARCH_INC_DIR}
+        ${CMSIS_CORE_INC_DIR}
+        ${CMSIS_CONFIG_INC_DIR}
+        ${CMSIS_DEVICE_INC_DIR}
 )
 # disable IPO to prevent functions in mem.c from being optimized out
 set_target_properties(
