@@ -41,6 +41,10 @@ namespace {
         page64k_device_rw( mmu_page64k_device_rw_l1, mmu_page64k_device_rw_l2, region );
     }
 
+    void create_tlb( void ) {
+        
+    }
+
     extern "C" __attribute__ ((naked))
     void reset( void ) {
         // In a multi-core system, enable non-primary cores to sleep.
@@ -66,6 +70,7 @@ namespace {
         __set_SP( PGRAM_END - 4 ); // initialize kernel stack before calling first possibly non-inline function
 
         create_mmu_handles();
+        create_tlb();
 
         // Initialize core mode stacks and registers.
         // Initialize any critical I/O devices.
