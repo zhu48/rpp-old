@@ -3,6 +3,8 @@
 
 #include <ARMCA9.h>
 
+#include "mem_load.h"
+
 extern int main( int argc, char* argv[] );
 
 namespace {
