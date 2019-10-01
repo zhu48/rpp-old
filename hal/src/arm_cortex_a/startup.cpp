@@ -61,7 +61,7 @@ namespace {
         MMU_Disable();
         MMU_InvalidateTLB();
 
-        // initialize stack
+        __set_SP( PGRAM_END - 4 ); // initialize kernel stack before calling first possibly non-inline function
 
         create_mmu_handles();
 
