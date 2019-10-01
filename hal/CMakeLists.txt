@@ -138,7 +138,7 @@ set(
     HAL_SRC_FILES
         ${HAL_SRC_DIR}/mem.c
         ${HAL_SRC_DIR}/portable.cpp
-        ${HAL_SRC_DIR}/startup.c
+        ${HAL_SRC_DIR}/startup.cpp
 )
 
 if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)

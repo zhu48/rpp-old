@@ -1,10 +1,10 @@
-#include <stddef.h>
+#include <cstddef>
 
 #include <ARMCA9.h>
 
 extern int main( int argc, char* argv[] );
 
-__attribute__ ((naked)) void reset( void ) {
+extern "C" __attribute__ ((naked)) void reset( void ) {
     // In a multi-core system, enable non-primary cores to sleep.
     __asm__ volatile(
         // disable all interrupts
@@ -36,31 +36,31 @@ __attribute__ ((naked)) void reset( void ) {
     // Call the main() application.
 }
 
-__attribute__ ((interrupt)) void undefined_instruction( void ) {
+extern "C" __attribute__ ((interrupt)) void undefined_instruction( void ) {
 
 }
 
-__attribute__ ((interrupt)) void supervisor_call( void ) {
+extern "C" __attribute__ ((interrupt)) void supervisor_call( void ) {
     
 }
 
-__attribute__ ((interrupt)) void prefetch_abort( void ) {
+extern "C" __attribute__ ((interrupt)) void prefetch_abort( void ) {
     
 }
 
-__attribute__ ((interrupt)) void data_abort( void ) {
+extern "C" __attribute__ ((interrupt)) void data_abort( void ) {
     
 }
 
-__attribute__ ((interrupt)) void interrupt_request( void ) {
+extern "C" __attribute__ ((interrupt)) void interrupt_request( void ) {
     
 }
 
-__attribute__ ((interrupt)) void fast_interrupt_request( void ) {
+extern "C" __attribute__ ((interrupt)) void fast_interrupt_request( void ) {
     
 }
 
-__attribute__ ((naked,__section__(".reset_table"))) void exception_vector_table( void ) {
+extern "C" __attribute__ ((naked,__section__(".reset_table"))) void exception_vector_table( void ) {
     __asm__ volatile(
         "B   reset                  \n" // branch to reset handler
         "B   undefined_instruction  \n" // branch to undefined instruction trap handler
