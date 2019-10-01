@@ -14,21 +14,21 @@ SECTIONS {
         *(.reset_table)
         KEEP(*(.reset_table))
 
-        *(.text)
+        *(.text*)
 
-        .*(SORT(.ctors))
-        .*(SORT(.dtors))
+        .*(SORT(.ctors*))
+        .*(SORT(.dtors*))
     } > EXROM
 
     .rodata : {
-        *(.rodata)
+        *(.rodata*)
     } > DAROM
 
     .data : {
-        *(.data)
+        *(.data*)
     } > DARAM
 
     .bss : {
-        *(.bss)
+        *(.bss*)
     } > DARAM
 }
