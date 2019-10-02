@@ -111,6 +111,39 @@ namespace {
         page64k_device_rw( mmu_page64k_device_rw_l1, mmu_page64k_device_rw_l2, region );
     }
 
+    void map_4k_x( std::uintptr_t base, std::size_t length ) {
+        MMU_TTPage4k(
+            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
+            base,
+            length / mmu::l2_table_4k_section_size,
+            mmu_page4k_normal_cod_l1,
+            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
+            mmu_page4k_normal_cod_l2
+        );
+    }
+
+    void map_4k_ro( std::uintptr_t base, std::size_t length ) {
+        MMU_TTPage4k(
+            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
+            base,
+            length / mmu::l2_table_4k_section_size,
+            mmu_page4k_normal_ro_l1,
+            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
+            mmu_page4k_normal_ro_l2
+        );
+    }
+
+    void map_4k_rw( std::uintptr_t base, std::size_t length ) {
+        MMU_TTPage4k(
+            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
+            base,
+            length / mmu::l2_table_4k_section_size,
+            mmu_page4k_normal_rw_l1,
+            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
+            mmu_page4k_normal_rw_l2
+        );
+    }
+
     void create_tlb( void ) {
         MMU_TTSection(
             reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
@@ -119,38 +152,10 @@ namespace {
             DESCRIPTOR_FAULT
         );
 
-        MMU_TTPage4k(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            EXROM_BASE,
-            EXROM_LENG / mmu::l2_table_4k_section_size,
-            mmu_page4k_normal_cod_l1,
-            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
-            mmu_page4k_normal_cod_l2
-        );
-        MMU_TTPage4k(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            DAROM_BASE,
-            DAROM_LENG / mmu::l2_table_4k_section_size,
-            mmu_page4k_normal_ro_l1,
-            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
-            mmu_page4k_normal_ro_l2
-        );
-        MMU_TTPage4k(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            DARAM_BASE,
-            DARAM_LENG / mmu::l2_table_4k_section_size,
-            mmu_page4k_normal_rw_l1,
-            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
-            mmu_page4k_normal_rw_l2
-        );
-        MMU_TTPage4k(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            PGRAM_BASE,
-            PGRAM_LENG / mmu::l2_table_4k_section_size,
-            mmu_page4k_normal_rw_l1,
-            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
-            mmu_page4k_normal_rw_l2
-        );
+        map_4k_x( EXROM_BASE, EXROM_LENG );
+        map_4k_ro( DAROM_BASE, DAROM_LENG );
+        map_4k_rw( DARAM_BASE, DARAM_LENG );
+        map_4k_rw( PGRAM_BASE, PGRAM_LENG );
     }
 
     extern "C" __attribute__ ((naked))
