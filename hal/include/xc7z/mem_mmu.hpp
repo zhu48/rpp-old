@@ -13,6 +13,10 @@ namespace mmu {
     constexpr std::size_t    l1_table_entry_size  = sizeof(std::size_t);
     constexpr std::size_t    l1_table_size        = l1_table_num_entries * l1_table_entry_size;
 
+    constexpr std::uintptr_t l2_table_base             = l1_table_base + l1_table_size;
+    constexpr std::size_t    l2_table_4k_section_size  = 0x00001000;
+    constexpr std::size_t    l2_table_64k_section_size = 0x00010000;
+
 }
 
 #endif // #ifndef MEM_MMU_HPP

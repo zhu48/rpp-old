@@ -18,10 +18,32 @@ namespace {
     std::uint32_t mmu_section_so;
     std::uint32_t mmu_section_device_ro;
     std::uint32_t mmu_section_device_rw;
+    std::uint32_t mmu_page4k_normal_cod_l1;
+    std::uint32_t mmu_page4k_normal_cod_l2;
     std::uint32_t mmu_page4k_device_rw_l1;
     std::uint32_t mmu_page4k_device_rw_l2;
     std::uint32_t mmu_page64k_device_rw_l1;
     std::uint32_t mmu_page64k_device_rw_l2;
+
+    void page4k_normal_cod(
+        std::uint32_t&              descriptor_l1,
+        std::uint32_t&              descriptor_l2,
+        mmu_region_attributes_Type& region
+    ) {
+        region.rg_t         = mmu_region_size_Type::PAGE_4k;
+        region.domain       = 0x0;
+        region.e_t          = mmu_ecc_check_Type::ECC_DISABLED;
+        region.g_t          = mmu_global_Type::GLOBAL;
+        region.inner_norm_t = mmu_cacheability_Type::NON_CACHEABLE;
+        region.outer_norm_t = mmu_cacheability_Type::NON_CACHEABLE;
+        region.mem_t        = mmu_memory_Type::NORMAL;
+        region.sec_t        = mmu_secure_Type::SECURE;
+        region.xn_t         = mmu_execute_Type::EXECUTE;
+        region.priv_t       = mmu_access_Type::READ;
+        region.user_t       = mmu_access_Type::READ;
+        region.sh_t         = mmu_shared_Type::NON_SHARED;
+        MMU_GetPageDescriptor( &descriptor_l1, &descriptor_l2, region );
+    }
 
     void _start( void ) {
         main( 0, NULL );
@@ -38,6 +60,7 @@ namespace {
         section_so( mmu_section_so, region );
         section_device_ro( mmu_section_device_ro, region );
         section_device_rw( mmu_section_device_rw, region );
+        page4k_normal_cod( mmu_page4k_normal_cod_l1, mmu_page4k_normal_cod_l2, region );
         page4k_device_rw( mmu_page4k_device_rw_l1, mmu_page4k_device_rw_l2, region );
         page64k_device_rw( mmu_page64k_device_rw_l1, mmu_page64k_device_rw_l2, region );
     }
@@ -45,9 +68,18 @@ namespace {
     void create_tlb( void ) {
         MMU_TTSection(
             reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            OCM_LOW_BASE,
+            0,
             mmu::l1_table_num_entries,
             DESCRIPTOR_FAULT
+        );
+
+        MMU_TTPage4k(
+            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
+            EXROM_BASE,
+            EXROM_LENG / mmu::l2_table_4k_section_size,
+            mmu_page4k_normal_cod_l1,
+            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
+            mmu_page4k_normal_cod_l2
         );
     }
 
