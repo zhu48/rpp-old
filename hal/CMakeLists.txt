@@ -129,6 +129,7 @@ set(
 set(
     HAL_PLATFORM_INC_FILES
         ${HAL_PLATFORM_INC_DIR}/mem_map.h
+        ${HAL_PLATFORM_INC_DIR}/mem_mmu.hpp
 )
 set(
     HAL_ARCH_INC_FILES

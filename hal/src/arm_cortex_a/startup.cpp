@@ -3,6 +3,7 @@
 
 #include <ARMCA9.h>
 
+#include "mem_mmu.hpp"
 #include "mem_load.h"
 
 extern int main( int argc, char* argv[] );
@@ -42,7 +43,12 @@ namespace {
     }
 
     void create_tlb( void ) {
-        
+        MMU_TTSection(
+            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
+            OCM_LOW_BASE,
+            mmu::l1_table_num_entries,
+            DESCRIPTOR_FAULT
+        );
     }
 
     extern "C" __attribute__ ((naked))
