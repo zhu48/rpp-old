@@ -36,8 +36,8 @@ namespace {
         region.domain       = 0x0;
         region.e_t          = mmu_ecc_check_Type::ECC_DISABLED;
         region.g_t          = mmu_global_Type::GLOBAL;
-        region.inner_norm_t = mmu_cacheability_Type::NON_CACHEABLE;
-        region.outer_norm_t = mmu_cacheability_Type::NON_CACHEABLE;
+        region.inner_norm_t = mmu_cacheability_Type::WB_WA;
+        region.outer_norm_t = mmu_cacheability_Type::WB_WA;
         region.mem_t        = mmu_memory_Type::NORMAL;
         region.sec_t        = mmu_secure_Type::SECURE;
         region.xn_t         = mmu_execute_Type::EXECUTE;
