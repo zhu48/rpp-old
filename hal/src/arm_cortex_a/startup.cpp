@@ -143,6 +143,14 @@ namespace {
             reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
             mmu_page4k_normal_rw_l2
         );
+        MMU_TTPage4k(
+            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
+            PGRAM_BASE,
+            PGRAM_LENG / mmu::l2_table_4k_section_size,
+            mmu_page4k_normal_rw_l1,
+            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
+            mmu_page4k_normal_rw_l2
+        );
     }
 
     extern "C" __attribute__ ((naked))
