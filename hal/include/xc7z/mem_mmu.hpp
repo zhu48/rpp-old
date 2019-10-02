@@ -7,6 +7,14 @@
 
 namespace mmu {
 
+    enum class ttbr0_bit : std::uint32_t {
+        inner_write_back = 1 << 6,
+        outer_no_alloc   = 1 << 4,
+        outer_write_back = 1 << 3,
+        shareable        = 1 << 1,
+        inner_no_alloc   = 1 << 0
+    };
+
     constexpr std::uintptr_t l1_table_base        = PGRAM_BASE;
     constexpr std::size_t    l1_section_size      =  0x00100000;
     constexpr std::uint32_t  l1_table_num_entries = 0x100000000 / l1_section_size;

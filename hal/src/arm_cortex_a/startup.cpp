@@ -156,6 +156,13 @@ namespace {
         map_4k_ro( DAROM_BASE, DAROM_LENG );
         map_4k_rw( DARAM_BASE, DARAM_LENG );
         map_4k_rw( PGRAM_BASE, PGRAM_LENG );
+
+        __set_TTBR0(
+            mmu::l1_table_base |
+            std::uint32_t( mmu::ttbr0_bit::inner_write_back ) |
+            std::uint32_t( mmu::ttbr0_bit::outer_write_back )
+        );
+        __ISB();
     }
 
     extern "C" __attribute__ ((naked))
