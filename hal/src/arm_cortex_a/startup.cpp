@@ -68,6 +68,10 @@ namespace {
 
         create_tlb();
 
+        MMU_Enable();
+        L1C_EnableCaches();
+        L1C_EnableBTAC();
+
         // Initialize core mode stacks and registers.
         // Initialize any critical I/O devices.
 
