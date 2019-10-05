@@ -1,4 +1,3 @@
-#include <cstddef>
 #include <cstdint>
 
 #include <ARMCA9.h>
@@ -8,14 +7,14 @@
 
 extern int main( int argc, char* argv[] );
 
+// Start and end points of the constructor list,
+// defined by the linker script.
+extern void ( *__init_array_start )();
+extern void ( *__init_array_end )();
+
 namespace {
 
-    // Start and end points of the constructor list,
-    // defined by the linker script.
-    extern "C" void ( *__init_array_start )();
-    extern "C" void ( *__init_array_end )();
-
-    void callConstructors() {
+    void construct_globals() {
         // Call each function in the list.
         // We have to take the address of the symbols, as __init_array_start *is* the first function
         // pointer, not the address of it.
@@ -25,8 +24,8 @@ namespace {
     }
 
     void _start( void ) {
-        callConstructors();
-        main( 0, NULL );
+        construct_globals();
+        main( 0, nullptr );
     }
 
     void create_tlb( void ) {
