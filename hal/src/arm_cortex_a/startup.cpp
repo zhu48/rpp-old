@@ -2,7 +2,7 @@
 
 #include <ARMCA9.h>
 
-#include "mem_mmu.hpp"
+#include "mem_load.h"
 #include "mmu.hpp"
 
 extern int main( int argc, char* argv[] );
@@ -31,19 +31,14 @@ namespace {
     void create_tlb( void ) {
         mmu::generate_descriptors();
 
-        mmu::map_section_fault( 0, mmu::l1_table_num_entries );
+        mmu::fault_all();
 
         mmu::map_4k_x( EXROM_BASE, EXROM_LENG );
         mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
         mmu::map_4k_rw( DARAM_BASE, DARAM_LENG );
         mmu::map_4k_rw( PGRAM_BASE, PGRAM_LENG );
 
-        __set_TTBR0(
-            mmu::l1_table_base |
-            std::uint32_t( mmu::ttbr0_bit::inner_write_back ) |
-            std::uint32_t( mmu::ttbr0_bit::outer_write_back )
-        );
-        __ISB();
+        mmu::commit_mappings();
     }
 
     extern "C" __attribute__ ((naked))

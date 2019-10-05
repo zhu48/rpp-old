@@ -7,6 +7,10 @@ namespace mmu {
 
     void generate_descriptors( void );
 
+    void commit_mappings( void );
+
+    void fault_all( void );
+
     void map_section_fault( std::uintptr_t base, std::size_t length );
 
     void map_4k_x( std::uintptr_t base, std::size_t length );

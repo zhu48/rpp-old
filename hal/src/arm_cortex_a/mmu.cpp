@@ -176,6 +176,19 @@ void mmu::generate_descriptors( void ) {
     page64k_device_rw( page64k_device_rw_l1, page64k_device_rw_l2, region );
 }
 
+void mmu::commit_mappings( void ) {
+    __set_TTBR0(
+        mmu::l1_table_base |
+        std::uint32_t( mmu::ttbr0_bit::inner_write_back ) |
+        std::uint32_t( mmu::ttbr0_bit::outer_write_back )
+    );
+    __ISB();
+}
+
+void mmu::fault_all( void ) {
+    map_section_fault( 0, l1_section_size * l1_table_num_entries );
+}
+
 void mmu::map_section_fault( std::uintptr_t base, std::size_t length ) {
     MMU_TTSection(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
