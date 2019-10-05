@@ -4,90 +4,11 @@
 #include <ARMCA9.h>
 
 #include "mem_mmu.hpp"
-#include "mem_load.h"
+#include "mmu.hpp"
 
 extern int main( int argc, char* argv[] );
 
 namespace {
-
-    std::uint32_t mmu_section_normal;
-    std::uint32_t mmu_section_normal_nc;
-    std::uint32_t mmu_section_normal_cod;
-    std::uint32_t mmu_section_normal_ro;
-    std::uint32_t mmu_section_normal_rw;
-    std::uint32_t mmu_section_so;
-    std::uint32_t mmu_section_device_ro;
-    std::uint32_t mmu_section_device_rw;
-    std::uint32_t mmu_page4k_normal_cod_l1;
-    std::uint32_t mmu_page4k_normal_cod_l2;
-    std::uint32_t mmu_page4k_normal_ro_l1;
-    std::uint32_t mmu_page4k_normal_ro_l2;
-    std::uint32_t mmu_page4k_normal_rw_l1;
-    std::uint32_t mmu_page4k_normal_rw_l2;
-    std::uint32_t mmu_page4k_device_rw_l1;
-    std::uint32_t mmu_page4k_device_rw_l2;
-    std::uint32_t mmu_page64k_device_rw_l1;
-    std::uint32_t mmu_page64k_device_rw_l2;
-
-    void page4k_normal_cod(
-        std::uint32_t&              descriptor_l1,
-        std::uint32_t&              descriptor_l2,
-        mmu_region_attributes_Type& region
-    ) {
-        region.rg_t         = mmu_region_size_Type::PAGE_4k;
-        region.domain       = 0x0;
-        region.e_t          = mmu_ecc_check_Type::ECC_DISABLED;
-        region.g_t          = mmu_global_Type::GLOBAL;
-        region.inner_norm_t = mmu_cacheability_Type::WB_WA;
-        region.outer_norm_t = mmu_cacheability_Type::WB_WA;
-        region.mem_t        = mmu_memory_Type::NORMAL;
-        region.sec_t        = mmu_secure_Type::SECURE;
-        region.xn_t         = mmu_execute_Type::EXECUTE;
-        region.priv_t       = mmu_access_Type::READ;
-        region.user_t       = mmu_access_Type::READ;
-        region.sh_t         = mmu_shared_Type::NON_SHARED;
-        MMU_GetPageDescriptor( &descriptor_l1, &descriptor_l2, region );
-    }
-
-    void page4k_normal_ro(
-        std::uint32_t&              descriptor_l1,
-        std::uint32_t&              descriptor_l2,
-        mmu_region_attributes_Type& region
-    ) {
-        region.rg_t         = mmu_region_size_Type::PAGE_4k;
-        region.domain       = 0x0;
-        region.e_t          = mmu_ecc_check_Type::ECC_DISABLED;
-        region.g_t          = mmu_global_Type::GLOBAL;
-        region.inner_norm_t = mmu_cacheability_Type::WB_WA;
-        region.outer_norm_t = mmu_cacheability_Type::WB_WA;
-        region.mem_t        = mmu_memory_Type::NORMAL;
-        region.sec_t        = mmu_secure_Type::SECURE;
-        region.xn_t         = mmu_execute_Type::NON_EXECUTE;
-        region.priv_t       = mmu_access_Type::READ;
-        region.user_t       = mmu_access_Type::READ;
-        region.sh_t         = mmu_shared_Type::NON_SHARED;
-        MMU_GetPageDescriptor( &descriptor_l1, &descriptor_l2, region );
-    }
-
-    void page4k_normal_rw(
-        std::uint32_t&              descriptor_l1,
-        std::uint32_t&              descriptor_l2,
-        mmu_region_attributes_Type& region
-    ) {
-        region.rg_t         = mmu_region_size_Type::PAGE_4k;
-        region.domain       = 0x0;
-        region.e_t          = mmu_ecc_check_Type::ECC_DISABLED;
-        region.g_t          = mmu_global_Type::GLOBAL;
-        region.inner_norm_t = mmu_cacheability_Type::WB_WA;
-        region.outer_norm_t = mmu_cacheability_Type::WB_WA;
-        region.mem_t        = mmu_memory_Type::NORMAL;
-        region.sec_t        = mmu_secure_Type::SECURE;
-        region.xn_t         = mmu_execute_Type::NON_EXECUTE;
-        region.priv_t       = mmu_access_Type::RW;
-        region.user_t       = mmu_access_Type::RW;
-        region.sh_t         = mmu_shared_Type::NON_SHARED;
-        MMU_GetPageDescriptor( &descriptor_l1, &descriptor_l2, region );
-    }
 
     // Start and end points of the constructor list,
     // defined by the linker script.
@@ -108,69 +29,15 @@ namespace {
         main( 0, NULL );
     }
 
-    void create_mmu_handles( void ) {
-        mmu_region_attributes_Type region;
-
-        section_normal( mmu_section_normal, region );
-        section_normal_nc( mmu_section_normal_nc, region );
-        section_normal_cod( mmu_section_normal_cod, region );
-        section_normal_ro( mmu_section_normal_ro, region );
-        section_normal_rw( mmu_section_normal_rw, region );
-        section_so( mmu_section_so, region );
-        section_device_ro( mmu_section_device_ro, region );
-        section_device_rw( mmu_section_device_rw, region );
-        page4k_normal_cod( mmu_page4k_normal_cod_l1, mmu_page4k_normal_cod_l2, region );
-        page4k_normal_ro( mmu_page4k_normal_ro_l1, mmu_page4k_normal_ro_l2, region );
-        page4k_normal_rw( mmu_page4k_normal_rw_l1, mmu_page4k_normal_rw_l2, region );
-        page4k_device_rw( mmu_page4k_device_rw_l1, mmu_page4k_device_rw_l2, region );
-        page64k_device_rw( mmu_page64k_device_rw_l1, mmu_page64k_device_rw_l2, region );
-    }
-
-    void map_4k_x( std::uintptr_t base, std::size_t length ) {
-        MMU_TTPage4k(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            base,
-            length / mmu::l2_table_4k_section_size,
-            mmu_page4k_normal_cod_l1,
-            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
-            mmu_page4k_normal_cod_l2
-        );
-    }
-
-    void map_4k_ro( std::uintptr_t base, std::size_t length ) {
-        MMU_TTPage4k(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            base,
-            length / mmu::l2_table_4k_section_size,
-            mmu_page4k_normal_ro_l1,
-            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
-            mmu_page4k_normal_ro_l2
-        );
-    }
-
-    void map_4k_rw( std::uintptr_t base, std::size_t length ) {
-        MMU_TTPage4k(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            base,
-            length / mmu::l2_table_4k_section_size,
-            mmu_page4k_normal_rw_l1,
-            reinterpret_cast<std::uint32_t*>( mmu::l2_table_base ),
-            mmu_page4k_normal_rw_l2
-        );
-    }
-
     void create_tlb( void ) {
-        MMU_TTSection(
-            reinterpret_cast<std::uint32_t*>( mmu::l1_table_base ),
-            0,
-            mmu::l1_table_num_entries,
-            DESCRIPTOR_FAULT
-        );
+        mmu::generate_descriptors();
 
-        map_4k_x( EXROM_BASE, EXROM_LENG );
-        map_4k_ro( DAROM_BASE, DAROM_LENG );
-        map_4k_rw( DARAM_BASE, DARAM_LENG );
-        map_4k_rw( PGRAM_BASE, PGRAM_LENG );
+        mmu::map_section_fault( 0, mmu::l1_table_num_entries );
+
+        mmu::map_4k_x( EXROM_BASE, EXROM_LENG );
+        mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
+        mmu::map_4k_rw( DARAM_BASE, DARAM_LENG );
+        mmu::map_4k_rw( PGRAM_BASE, PGRAM_LENG );
 
         __set_TTBR0(
             mmu::l1_table_base |
@@ -204,7 +71,6 @@ namespace {
 
         __set_SP( PGRAM_END - 4 ); // initialize kernel stack before calling first possibly non-inline function
 
-        create_mmu_handles();
         create_tlb();
 
         // Initialize core mode stacks and registers.
