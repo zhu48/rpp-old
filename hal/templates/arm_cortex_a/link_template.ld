@@ -13,12 +13,21 @@ SECTIONS {
     .reset : {
         *(.reset_table)
         KEEP(*(.reset_table))
+    } > EXROM
 
+    .text : {
         *(.text*)
+    } > EXROM
 
+    .ctors : {
         .*(SORT(.ctors*))
+    } > EXROM
+    
+    .dtors : {
         .*(SORT(.dtors*))
+    } > EXROM
 
+    .init_array : {
         __init_array_start = .;
         KEEP (*(.init_array*))
         __init_array_end = .;
