@@ -36,7 +36,8 @@ namespace {
         mmu::map_4k_x( EXROM_BASE, EXROM_LENG );
         mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
         mmu::map_4k_rw( DARAM_BASE, DARAM_LENG );
-        mmu::map_4k_rw( PGRAM_BASE, PGRAM_LENG );
+        mmu::map_4k_rw( PGRAM0_BASE, PGRAM0_LENG );
+        mmu::map_4k_rw( PGRAM1_BASE, PGRAM1_LENG );
 
         mmu::commit_mappings();
     }
@@ -55,6 +56,8 @@ namespace {
             "    BNE   sleep                 \n" // stay asleep until a handler re-directs the core
         );
 
+        __set_SP( PGRAM1_END - 4 ); // initialize kernel stack before calling first possibly non-inline function
+
         // Initialize the memory system, including the MMU.
         L1C_DisableCaches();
         L1C_InvalidateBTAC();
@@ -62,8 +65,6 @@ namespace {
         L1C_CleanInvalidateDCacheAll();
         MMU_Disable();
         MMU_InvalidateTLB();
-
-        __set_SP( PGRAM_END - 4 ); // initialize kernel stack before calling first possibly non-inline function
 
         create_tlb();
 
@@ -83,32 +84,44 @@ namespace {
 
     extern "C" __attribute__ ((interrupt))
     void undefined_instruction( void ) {
-        
+        while(true) {
+            // spin
+        }
     }
 
     extern "C" __attribute__ ((interrupt))
     void supervisor_call( void ) {
-        
+        while(true) {
+            // spin
+        }
     }
 
     extern "C" __attribute__ ((interrupt))
     void prefetch_abort( void ) {
-        
+        while(true) {
+            // spin
+        }
     }
 
     extern "C" __attribute__ ((interrupt))
     void data_abort( void ) {
-        
+        while(true) {
+            // spin
+        }
     }
 
     extern "C" __attribute__ ((interrupt))
     void interrupt_request( void ) {
-        
+        while(true) {
+            // spin
+        }
     }
 
     extern "C" __attribute__ ((interrupt))
     void fast_interrupt_request( void ) {
-        
+        while(true) {
+            // spin
+        }
     }
 
     extern "C" __attribute__ ((naked,__section__(".reset_table")))

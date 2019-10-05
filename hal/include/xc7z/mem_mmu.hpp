@@ -15,7 +15,7 @@ namespace mmu {
         inner_no_alloc   = 1 << 0
     };
 
-    constexpr std::uintptr_t l1_table_base        = PGRAM_BASE;
+    constexpr std::uintptr_t l1_table_base        = PGRAM0_BASE;
     constexpr std::size_t    l1_section_size      =  0x00100000;
     constexpr std::uint32_t  l1_table_num_entries = 0x100000000 / l1_section_size;
     constexpr std::size_t    l1_table_entry_size  = sizeof(std::size_t);
