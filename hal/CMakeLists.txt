@@ -162,10 +162,12 @@ set(
 set(
     HAL_ARCH_INC_FILES
         ${HAL_ARCH_INC_DIR}/mem_load.h
+        ${HAL_ARCH_INC_DIR}/mmu.hpp
 )
 set(
     HAL_SRC_FILES
         ${HAL_SRC_DIR}/mem.c
+        ${HAL_SRC_DIR}/mmu.cpp
         ${HAL_SRC_DIR}/portable.cpp
         ${HAL_SRC_DIR}/startup.cpp
 )
