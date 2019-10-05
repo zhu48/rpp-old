@@ -41,6 +41,34 @@ if(RPP_PTHREADS)
     find_package(Threads REQUIRED)
 endif()
 
+# set the policy to enable inter-procedural optimization if available
+if(POLICY CMP0069)
+    cmake_policy(SET CMP0069 NEW)
+endif()
+if(NOT DEFINED IPO_SUPPORTED)
+    # check for inter-procedural optimization support
+    include(CheckIPOSupported OPTIONAL RESULT_VARIABLE HAS_CHECK_IPO)
+    if(HAS_CHECK_IPO)
+        message(STATUS "Determining inter-procedural optimization support")
+        
+        check_ipo_supported(RESULT IPO)
+        
+        if(IPO)
+            message(STATUS "Inter-procedural optimization enabled")
+        else()
+            message(STATUS "Inter-procedural optimization disabled")
+        endif()
+    else()
+        message(STATUS "Cannot determine inter-procedural optimization support")
+        message(STATUS "Inter-procedural optimization is disabled")
+        
+        set(IPO FALSE)
+    endif()
+    
+    set(IPO_SUPPORTED ${IPO} CACHE STRING "Inter-procedural optimization support")
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${IPO} CACHE INTERNAL "" FORCE)
+endif()
+
 ######################
 # Derive Directories #
 ######################
@@ -186,12 +214,6 @@ target_include_directories(
         ${CMSIS_CORE_INC_DIR}
         ${CMSIS_CONFIG_INC_DIR}
         ${CMSIS_DEVICE_INC_DIR}
-)
-# disable IPO to prevent functions in mem.c from being optimized out
-set_target_properties(
-    hal
-    PROPERTIES
-        INTERPROCEDURAL_OPTIMIZATION FALSE
 )
 # link to pthreads if targeting Unix host
 if(RPP_PTHREADS)
