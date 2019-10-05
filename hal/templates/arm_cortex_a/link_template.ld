@@ -16,32 +16,39 @@ SECTIONS {
         KEEP(*(.reset_table))
     } > EXROM
 
+    . = ALIGN(4);
     .text : {
         *(.text*)
     } > EXROM
 
+    . = ALIGN(4);
     .ctors : {
         .*(SORT(.ctors*))
     } > EXROM
-    
+
+    . = ALIGN(4);
     .dtors : {
         .*(SORT(.dtors*))
     } > EXROM
 
+    . = ALIGN(4);
     .init_array : {
         __init_array_start = .;
         KEEP (*(.init_array*))
         __init_array_end = .;
     } > EXROM
 
+    . = ALIGN(4);
     .rodata : {
         *(.rodata*)
     } > DAROM
 
+    . = ALIGN(4);
     .data : {
         *(.data*)
     } > DARAM
 
+    . = ALIGN(4);
     .bss : {
         *(.bss*)
     } > DARAM
