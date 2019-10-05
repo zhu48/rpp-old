@@ -28,7 +28,7 @@ namespace {
         main( 0, nullptr );
     }
 
-    void create_tlb( void ) {
+    void create_translation_table( void ) {
         mmu::generate_descriptors();
 
         mmu::fault_all();
@@ -66,7 +66,7 @@ namespace {
         MMU_Disable();
         MMU_InvalidateTLB();
 
-        create_tlb();
+        create_translation_table();
 
         MMU_Enable();
         L1C_EnableCaches();
