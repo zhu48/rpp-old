@@ -89,7 +89,22 @@ namespace {
         MMU_GetPageDescriptor( &descriptor_l1, &descriptor_l2, region );
     }
 
+    // Start and end points of the constructor list,
+    // defined by the linker script.
+    extern "C" void ( *__init_array_start )();
+    extern "C" void ( *__init_array_end )();
+
+    void callConstructors() {
+        // Call each function in the list.
+        // We have to take the address of the symbols, as __init_array_start *is* the first function
+        // pointer, not the address of it.
+        for ( void ( **p )() = &__init_array_start; p < &__init_array_end; ++p ) {
+            ( *p )();
+        }
+    }
+
     void _start( void ) {
+        callConstructors();
         main( 0, NULL );
     }
 
