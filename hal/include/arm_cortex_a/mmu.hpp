@@ -13,6 +13,8 @@ namespace mmu {
 
     void map_section_fault( std::uintptr_t base, std::size_t length );
 
+    void map_section_rw_device( std::uintptr_t base, std::size_t length );
+
     void map_4k_x( std::uintptr_t base, std::size_t length );
 
     void map_4k_ro( std::uintptr_t base, std::size_t length );

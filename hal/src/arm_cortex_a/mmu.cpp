@@ -198,6 +198,15 @@ void mmu::map_section_fault( std::uintptr_t base, std::size_t length ) {
     );
 }
 
+void mmu::map_section_rw_device( std::uintptr_t base, std::size_t length ) {
+    MMU_TTSection(
+        reinterpret_cast<std::uint32_t*>( l1_table_base ),
+        base,
+        length / l1_section_size,
+        section_device_rw
+    );
+}
+
 void mmu::map_4k_x( std::uintptr_t base, std::size_t length ) {
     MMU_TTPage4k(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
