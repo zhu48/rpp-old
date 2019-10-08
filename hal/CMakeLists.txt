@@ -189,6 +189,20 @@ if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
     )
 endif()
 
+#######################
+# Gather Dependencies #
+#######################
+
+# get repository containing directory
+get_filename_component(REPO_DIR ${RPP_ROOT_DIR} DIRECTORY)
+
+if(EXISTS ${REPO_DIR}/rtl_devices)
+    set(HAS_PERIPH_LIB TRUE)
+    add_subdirectory(${REPO_DIR}/rtl_devices ${CMAKE_CURRENT_BINARY_DIR}/periph)
+else()
+    set(HAS_PERIPH_LIB FALSE)
+endif()
+
 ################################
 # Configure HAL Library Target #
 ################################
@@ -217,9 +231,13 @@ target_include_directories(
         ${CMSIS_CONFIG_INC_DIR}
         ${CMSIS_DEVICE_INC_DIR}
 )
+# link to peripheral device driver library
+if(HAS_PERIPH_LIB)
+    target_link_libraries(hal PRIVATE periph)
+endif()
 # link to pthreads if targeting Unix host
 if(RPP_PTHREADS)
-	target_link_libraries(hal Threads::Threads)
+    target_link_libraries(hal Threads::Threads)
 endif()
 
 # add custom linker script if necessary
