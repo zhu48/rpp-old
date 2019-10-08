@@ -237,7 +237,7 @@ if(HAS_PERIPH_LIB)
 endif()
 # link to pthreads if targeting Unix host
 if(RPP_PTHREADS)
-    target_link_libraries(hal Threads::Threads)
+    target_link_libraries(hal PRIVATE Threads::Threads)
 endif()
 
 # add custom linker script if necessary
