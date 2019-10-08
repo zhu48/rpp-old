@@ -4,6 +4,7 @@
 
 #include "mem_load.h"
 #include "mmu.hpp"
+#include "platform.hpp"
 
 extern int main( int argc, char* argv[] );
 
@@ -68,6 +69,8 @@ namespace {
         L1C_CleanInvalidateDCacheAll();
         MMU_Disable();
         MMU_InvalidateTLB();
+
+        platform::init();
 
         create_translation_table();
 
