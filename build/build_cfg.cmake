@@ -13,8 +13,9 @@ set(RPP_TEST_TARGET     "FALSE"   CACHE BOOL   "Flag to create a test target" FO
 
 set(CMSIS_PATH "C:/SVC/zhu48/CMSIS_5" CACHE PATH "ARM CMSIS-5 repository root" FORCE)
 
-set(XSDK_VERSION      "NONE" CACHE PATH   "Xilinx SDK version"           FORCE)
-set(XSDK_INSTALL_PATH "NONE" CACHE STRING "Xilinx SDK installation path" FORCE)
+set(XSDK_VERSION      "NONE" CACHE STRING "Xilinx SDK version"            FORCE)
+set(XSDK_INSTALL_PATH "NONE" CACHE PATH   "Xilinx SDK installation path"  FORCE)
+set(XSDK_HW_PLATFORM  "NONE" CACHE PATH   "Xilinx hardware platform path" FORCE)
 
 ##############################
 # Valid Configuration Values #

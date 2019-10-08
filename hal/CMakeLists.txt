@@ -75,6 +75,7 @@ endif()
 
 set(HAL_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(HAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${HAL_TARGET_ARCH})
+set(HAL_PLT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${HAL_TARGET_PLATFORM})
 
 set(HAL_ARCH_INC_DIR     ${HAL_INC_DIR}/${HAL_TARGET_ARCH})
 set(HAL_PLATFORM_INC_DIR ${HAL_INC_DIR}/${HAL_TARGET_PLATFORM})
@@ -158,7 +159,12 @@ set(
     HAL_PLATFORM_INC_FILES
         ${HAL_PLATFORM_INC_DIR}/mem_map.h
         ${HAL_PLATFORM_INC_DIR}/mem_mmu.hpp
+        ${HAL_PLATFORM_INC_DIR}/platform.hpp
+        ${HAL_PLATFORM_INC_DIR}/xil_io.h
 )
+if(EXISTS ${XSDK_HW_PLATFORM})
+    set(HAL_PLATFORM_INC_FILES ${HAL_PLATFORM_INC_FILES} ${HAL_PLATFORM_INC_DIR}/xil_io.h)
+endif()
 set(
     HAL_ARCH_INC_FILES
         ${HAL_ARCH_INC_DIR}/mem_load.h
@@ -171,6 +177,19 @@ set(
         ${HAL_SRC_DIR}/portable.cpp
         ${HAL_SRC_DIR}/startup.cpp
 )
+set(
+    HAL_PLT_FILES
+        ${HAL_PLT_DIR}/platform.cpp
+)
+if(EXISTS ${XSDK_HW_PLATFORM})
+    set(
+        XSDK_PLATFORM_FILES
+            ${XSDK_HW_PLATFORM}/ps7_init_gpl.h
+            ${XSDK_HW_PLATFORM}/ps7_init.h
+            ${XSDK_HW_PLATFORM}/ps7_init_gpl.c
+            ${XSDK_HW_PLATFORM}/ps7_init.c
+    )
+endif()
 
 if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
     set(
@@ -197,10 +216,12 @@ endif()
 get_filename_component(REPO_DIR ${RPP_ROOT_DIR} DIRECTORY)
 
 if(EXISTS ${REPO_DIR}/rtl_devices)
-    set(HAS_PERIPH_LIB TRUE)
+    set(HAL_PERIPH_LIB TRUE)
+    set(HAL_PERIPH_LIB TRUE PARENT_SCOPE)
     add_subdirectory(${REPO_DIR}/rtl_devices ${CMAKE_CURRENT_BINARY_DIR}/periph)
+    set(TEST_PWM_SRC_FILES ${TEST_PWM_SRC_FILES} PARENT_SCOPE)
 else()
-    set(HAS_PERIPH_LIB FALSE)
+    set(HAL_PERIPH_LIB FALSE)
 endif()
 
 ################################
@@ -215,6 +236,8 @@ add_library(
         ${HAL_ARCH_INC_FILES}
         ${HAL_PLATFORM_INC_FILES}
         ${HAL_SRC_FILES}
+        ${HAL_PLT_FILES}
+        ${XSDK_PLATFORM_FILES}
         ${CMSIS_CORE_INC_FILES}
         ${CMSIS_CONFIG_INC_FILES}
         ${CMSIS_DEVICE_INC_FILES}
@@ -231,8 +254,15 @@ target_include_directories(
         ${CMSIS_CONFIG_INC_DIR}
         ${CMSIS_DEVICE_INC_DIR}
 )
+if(EXISTS ${XSDK_HW_PLATFORM})
+    target_include_directories(
+        hal
+        PRIVATE
+            ${XSDK_HW_PLATFORM}
+    )
+endif()
 # link to peripheral device driver library
-if(HAS_PERIPH_LIB)
+if(HAL_PERIPH_LIB)
     target_link_libraries(hal PRIVATE periph)
 endif()
 # link to pthreads if targeting Unix host
