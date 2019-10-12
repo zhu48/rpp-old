@@ -175,6 +175,10 @@ if(HAL_PERIPH_LIB)
 	add_executable(pwm_test ${TEST_PWM_SRC_FILES})
 	target_link_libraries(pwm_test PUBLIC rpp)
 	target_link_libraries(pwm_test PUBLIC periph)
+	
+	add_executable(pwb_test ${TEST_PWB_SRC_FILES})
+	target_link_libraries(pwb_test PUBLIC rpp)
+	target_link_libraries(pwb_test PUBLIC periph)
 endif()
 
 ############################

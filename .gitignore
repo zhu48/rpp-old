@@ -75,3 +75,4 @@ docs/Doxyfile
 # Project Targets
 rpp_test_sched
 pwm_test
+pwb_test
