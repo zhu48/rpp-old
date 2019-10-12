@@ -11,7 +11,7 @@ set(RPP_TARGET_PLATFORM "NONE"    CACHE STRING "Target platform"              FO
 set(RPP_COMPILER        "DEFAULT" CACHE STRING "Target compiler"              FORCE)
 set(RPP_TEST_TARGET     "FALSE"   CACHE BOOL   "Flag to create a test target" FORCE)
 
-set(CMSIS_PATH "C:/SVC/zhu48/CMSIS_5" CACHE PATH "ARM CMSIS-5 repository root" FORCE)
+set(CMSIS_PATH "NONE" CACHE PATH "ARM CMSIS-5 repository root" FORCE)
 
 set(XSDK_VERSION      "NONE" CACHE STRING "Xilinx SDK version"            FORCE)
 set(XSDK_INSTALL_PATH "NONE" CACHE PATH   "Xilinx SDK installation path"  FORCE)
