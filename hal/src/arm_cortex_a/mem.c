@@ -40,7 +40,7 @@ void* memmove( void* destination, const void* source, size_t num ) {
     if ( destination < source ) {
         return memcpy( destination, source, num );
     } else {
-        for ( size_t i = num-1; i >= 0; --i ) {
+        for ( int i = num-1; i >= 0; --i ) {
             unsigned char* pdst = (unsigned char*)destination;
             const unsigned char* psrc = (const unsigned char*)source;
 
