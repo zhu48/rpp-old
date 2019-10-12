@@ -151,7 +151,7 @@ endif()
 ####################################
 
 if(RPP_TEST_TARGET)
-	message(STATUS "Creating test executable target")
+	message(STATUS "Creating test executable targets")
 
 	# compile test executable
 	add_executable(
@@ -160,18 +160,18 @@ if(RPP_TEST_TARGET)
 	)
 	# link to kernel library
 	target_link_libraries(rpp_test_sched PUBLIC rpp)
-else()
-	message(STATUS "Excluding test executable target from build")
-endif()
 
-if(HAL_PERIPH_LIB)
-	add_executable(pwm_test ${TEST_PWM_SRC_FILES})
-	target_link_libraries(pwm_test PUBLIC rpp)
-	target_link_libraries(pwm_test PUBLIC periph)
-	
-	add_executable(pwb_test ${TEST_PWB_SRC_FILES})
-	target_link_libraries(pwb_test PUBLIC rpp)
-	target_link_libraries(pwb_test PUBLIC periph)
+	if(HAL_PERIPH_LIB)
+		add_executable(pwm_test ${TEST_PWM_SRC_FILES})
+		target_link_libraries(pwm_test PUBLIC rpp)
+		target_link_libraries(pwm_test PUBLIC periph)
+		
+		add_executable(pwb_test ${TEST_PWB_SRC_FILES})
+		target_link_libraries(pwb_test PUBLIC rpp)
+		target_link_libraries(pwb_test PUBLIC periph)
+	endif()
+else()
+	message(STATUS "Excluding test executable targets from build")
 endif()
 
 ############################
