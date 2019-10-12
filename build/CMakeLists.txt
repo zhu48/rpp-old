@@ -113,6 +113,7 @@ else()
 	set(HAL_TARGET_ARCH ${HAL_TARGET_PLATFORM})
 endif()
 add_subdirectory(${HAL_DIR} ${CMAKE_CURRENT_BINARY_DIR}/hal)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}" PARENT_SCOPE)
 
 ###################################
 # Configure Kernel Library Target #
