@@ -164,7 +164,6 @@ set(
 )
 set(
     HAL_SRC_FILES
-        ${HAL_SRC_DIR}/mem.c
         ${HAL_SRC_DIR}/mmu.cpp
         ${HAL_SRC_DIR}/portable.cpp
         ${HAL_SRC_DIR}/startup.cpp
@@ -221,6 +220,10 @@ endif()
 # Configure HAL Library Target #
 ################################
 
+# compile C mem* functions as a non-LTO library
+add_library(cmem STATIC ${HAL_SRC_DIR}/mem.c)
+set_target_properties(cmem PROPERTIES INTERPROCEDURAL_OPTIMIZATION false)
+
 # compile HAL as static library
 add_library(
     hal
@@ -254,6 +257,8 @@ if(EXISTS ${XSDK_HW_PLATFORM})
             ${XSDK_HW_PLATFORM}
     )
 endif()
+# link to C mem* functions
+target_link_libraries(hal PUBLIC cmem)
 # link to peripheral device driver library
 if(HAL_PERIPH_LIB)
     target_link_libraries(hal PRIVATE periph)
