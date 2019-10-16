@@ -60,7 +60,7 @@ namespace {
             "    BNE   sleep                 \n" // stay asleep until a handler re-directs the core
         );
 
-        __set_SP( PGRAM1_END - 4 ); // initialize kernel stack before calling first possibly non-inline function
+        __set_SP( PGRAM1_END - 4 ); // initialize kernel stack before calling any functions
 
         // Initialize the memory system, including the MMU.
         L1C_DisableCaches();
@@ -79,6 +79,18 @@ namespace {
         L1C_EnableBTAC();
 
         // Initialize core mode stacks and registers.
+        __asm__ volatile( "CPS #0x11" ); // switch to FIQ mode
+        __set_SP( PGRAM1_END - 1*4096 - 4 );
+        __asm__ volatile( "CPS #0x12" ); // switch to IRQ mode
+        __set_SP( PGRAM1_END - 2*4096 - 4 );
+        __asm__ volatile( "CPS #0x13" ); // switch to SVC mode
+        __set_SP( PGRAM1_END - 3*4096 - 4 );
+        __asm__ volatile( "CPS #0x17" ); // switch to ABT mode
+        __set_SP( PGRAM1_END - 4*4096 - 4 );
+        __asm__ volatile( "CPS #0x1B" ); // switch to UND mode
+        __set_SP( PGRAM1_END - 5*4096 - 4 );
+        __asm__ volatile( "CPS #0x1F" ); // switch to SYS mode
+
         // Initialize any critical I/O devices.
 
         // Perform any necessary initialization of NEON or VFP.
