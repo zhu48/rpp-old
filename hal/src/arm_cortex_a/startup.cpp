@@ -85,6 +85,8 @@ namespace {
         __FPU_Enable();
 
         // Enable interrupts.
+        __asm__ volatile( "CPSIE if" );
+
         // Change core mode or state.
         // Handle any set-up required for the Secure world.
 
