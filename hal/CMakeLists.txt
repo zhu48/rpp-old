@@ -168,6 +168,7 @@ set(
         ${HAL_SRC_DIR}/mmu.cpp
         ${HAL_SRC_DIR}/portable.cpp
         ${HAL_SRC_DIR}/startup.cpp
+        ${HAL_SRC_DIR}/systick.cpp
 )
 set(
     HAL_PLT_FILES
