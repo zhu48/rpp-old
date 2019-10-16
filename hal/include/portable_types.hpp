@@ -6,6 +6,11 @@
 namespace portable {
 
     /**
+     * Interrupt handler function type.
+     */
+    using handler_fn_t = void (*)();
+
+    /**
      * \brief Type used as the thread entry point function argument.
      */
     using entry_fn_arg_t = void* const;

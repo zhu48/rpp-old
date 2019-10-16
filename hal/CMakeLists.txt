@@ -146,6 +146,7 @@ set(
         ${HAL_INC_DIR}/portable_defs.hpp
         ${HAL_INC_DIR}/portable_types.hpp
         ${HAL_INC_DIR}/portable.hpp
+        ${HAL_INC_DIR}/systick.hpp
 )
 set(
     HAL_PLATFORM_INC_FILES
