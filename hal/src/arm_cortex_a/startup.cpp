@@ -1,6 +1,6 @@
 #include <cstdint>
 
-#include <ARMCA9.h>
+#include "cpu.hpp"
 
 #include "mem_load.h"
 #include "mmu.hpp"
