@@ -112,7 +112,11 @@ if(RPP_TARGET_PLATFORM IN_LIST RPP_TARGET_PLATFORM_OPTS)
         message(STATUS "Using default compiler for build environment")
     elseif(RPP_COMPILER IN_LIST RPP_COMPILER_OPTS)
         # set toolchain file based on target architecture.
-        set(CMAKE_TOOLCHAIN_FILE "${RPP_TARGET_PLATFORM}_${RPP_COMPILER}.cmake" CACHE PATH "" FORCE)
+        set(
+            CMAKE_TOOLCHAIN_FILE
+                "${CMAKE_CURRENT_LIST_DIR}/${RPP_TARGET_PLATFORM}_${RPP_COMPILER}.cmake"
+            CACHE PATH "" FORCE
+        )
     else()
         message(STATUS "When cross-compiling, set RPP_COMPILER to one of the folowing:")
         message(STATUS "    ${RPP_COMPILER_OPTS}")
