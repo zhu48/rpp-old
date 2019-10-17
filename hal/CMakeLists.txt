@@ -143,6 +143,7 @@ endif()
 
 set(
     HAL_INC_FILES
+        ${HAL_INC_DIR}/platform.hpp
         ${HAL_INC_DIR}/portable_defs.hpp
         ${HAL_INC_DIR}/portable_types.hpp
         ${HAL_INC_DIR}/portable.hpp
@@ -153,7 +154,6 @@ set(
         ${HAL_PLATFORM_INC_DIR}/cpu.hpp
         ${HAL_PLATFORM_INC_DIR}/mem_map.h
         ${HAL_PLATFORM_INC_DIR}/mem_mmu.hpp
-        ${HAL_PLATFORM_INC_DIR}/platform.hpp
         ${HAL_PLATFORM_INC_DIR}/xil_io.h
 )
 if(EXISTS ${XSDK_HW_PLATFORM})
