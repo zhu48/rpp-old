@@ -1,5 +1,5 @@
-#ifndef MEM_CPU_HPP
-#define MEM_CPU_HPP
+#ifndef CPU_HPP
+#define CPU_HPP
 
 #include <cstdint>
 
@@ -15,4 +15,4 @@ namespace platform {
 
 }
 
-#endif // #ifndef MEM_CPU_HPP
+#endif // #ifndef CPU_HPP
