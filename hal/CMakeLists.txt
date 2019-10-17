@@ -173,6 +173,7 @@ set(
 )
 set(
     HAL_PLT_FILES
+        ${HAL_PLT_DIR}/cpu.cpp
         ${HAL_PLT_DIR}/platform.cpp
 )
 if(EXISTS ${XSDK_HW_PLATFORM})

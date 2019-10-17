@@ -13,6 +13,8 @@ namespace platform {
     constexpr std::uintptr_t int_ctrl_dist_base    = 0xF8F01000;
     constexpr std::uintptr_t l2c_base              = 0xF8F02000;
 
+    std::uint32_t core_freq_hz();
+
 }
 
 #endif // #ifndef CPU_HPP
