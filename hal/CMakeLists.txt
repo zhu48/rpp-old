@@ -150,6 +150,7 @@ set(
 )
 set(
     HAL_PLATFORM_INC_FILES
+        ${HAL_PLATFORM_INC_DIR}/mem_cpu.hpp
         ${HAL_PLATFORM_INC_DIR}/mem_map.h
         ${HAL_PLATFORM_INC_DIR}/mem_mmu.hpp
         ${HAL_PLATFORM_INC_DIR}/platform.hpp
