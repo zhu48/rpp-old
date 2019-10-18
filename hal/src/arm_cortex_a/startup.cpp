@@ -25,6 +25,7 @@ namespace {
     }
 
     void _start( void ) {
+        platform::init();
         construct_globals();
         main( 0, nullptr );
     }
@@ -42,6 +43,10 @@ namespace {
 
         mmu::map_section_rw_device( PL0_BASE, PL0_LENG );
         mmu::map_section_rw_device( PL1_BASE, PL1_LENG );
+        mmu::map_section_rw_device( IOP_BASE, IOP_LENG );
+        mmu::map_section_rw_device( SLCR_BASE, SLCR_LENG );
+        mmu::map_section_rw_device( PS_BASE, PS_LENG );
+        mmu::map_section_rw_device( CPU_BASE, CPU_LENG );
 
         mmu::commit_mappings();
     }
@@ -69,8 +74,6 @@ namespace {
         L1C_CleanInvalidateDCacheAll();
         MMU_Disable();
         MMU_InvalidateTLB();
-
-        platform::init();
 
         create_translation_table();
 
