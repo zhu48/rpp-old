@@ -153,6 +153,28 @@ namespace {
         MMU_GetPageDescriptor( &descriptor_l1, &descriptor_l2, region );
     }
 
+    constexpr std::size_t round_up_4k( std::size_t leng ) {
+        if ( leng % mmu::l2_table_4k_section_size == 0 )
+            return leng;
+
+        return leng + ( mmu::l2_table_4k_section_size - ( leng % mmu::l2_table_4k_section_size ) );
+    }
+
+    constexpr std::size_t round_up_64k( std::size_t leng ) {
+        if ( leng % mmu::l2_table_64k_section_size == 0 )
+            return leng;
+
+        return
+            leng + ( mmu::l2_table_64k_section_size - ( leng % mmu::l2_table_64k_section_size ) );
+    }
+
+    constexpr std::size_t round_up_sec( std::size_t leng ) {
+        if ( leng % mmu::l1_section_size == 0 )
+            return leng;
+
+        return leng + ( mmu::l1_section_size - ( leng % mmu::l1_section_size ) );
+    }
+
 }
 
 void mmu::generate_descriptors( void ) {
@@ -193,7 +215,7 @@ void mmu::map_section_fault( std::uintptr_t base, std::size_t length ) {
     MMU_TTSection(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l1_section_size,
+        round_up_sec( length ) / l1_section_size,
         DESCRIPTOR_FAULT
     );
 }
@@ -202,8 +224,19 @@ void mmu::map_section_rw_device( std::uintptr_t base, std::size_t length ) {
     MMU_TTSection(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l1_section_size,
+        round_up_sec( length ) / l1_section_size,
         section_device_rw
+    );
+}
+
+void mmu::map_4k_rw_device( std::uintptr_t base, std::size_t length ) {
+    MMU_TTPage4k(
+        reinterpret_cast<std::uint32_t*>( l1_table_base ),
+        base,
+        round_up_4k( length ) / l2_table_4k_section_size,
+        page4k_device_rw_l1,
+        reinterpret_cast<std::uint32_t*>( l2_table_base ),
+        page4k_device_rw_l2
     );
 }
 
@@ -211,7 +244,7 @@ void mmu::map_4k_x( std::uintptr_t base, std::size_t length ) {
     MMU_TTPage4k(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l2_table_4k_section_size,
+        round_up_4k( length ) / l2_table_4k_section_size,
         page4k_normal_cod_l1,
         reinterpret_cast<std::uint32_t*>( l2_table_base ),
         page4k_normal_cod_l2
@@ -222,7 +255,7 @@ void mmu::map_4k_ro( std::uintptr_t base, std::size_t length ) {
     MMU_TTPage4k(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l2_table_4k_section_size,
+        round_up_4k( length ) / l2_table_4k_section_size,
         page4k_normal_ro_l1,
         reinterpret_cast<std::uint32_t*>( l2_table_base ),
         page4k_normal_ro_l2
@@ -233,7 +266,7 @@ void mmu::map_4k_rw( std::uintptr_t base, std::size_t length ) {
     MMU_TTPage4k(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l2_table_4k_section_size,
+        round_up_4k( length ) / l2_table_4k_section_size,
         page4k_normal_rw_l1,
         reinterpret_cast<std::uint32_t*>( l2_table_base ),
         page4k_normal_rw_l2
@@ -244,7 +277,7 @@ void mmu::map_64k_x( std::uintptr_t base, std::size_t length ) {
     MMU_TTPage64k(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l2_table_64k_section_size,
+        round_up_64k( length ) / l2_table_64k_section_size,
         page64k_normal_cod_l1,
         reinterpret_cast<std::uint32_t*>( l2_table_base ),
         page64k_normal_cod_l2
@@ -255,7 +288,7 @@ void mmu::map_64k_ro( std::uintptr_t base, std::size_t length ) {
     MMU_TTPage64k(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l2_table_64k_section_size,
+        round_up_64k( length ) / l2_table_64k_section_size,
         page64k_normal_ro_l1,
         reinterpret_cast<std::uint32_t*>( l2_table_base ),
         page64k_normal_ro_l2
@@ -266,7 +299,7 @@ void mmu::map_64k_rw( std::uintptr_t base, std::size_t length ) {
     MMU_TTPage64k(
         reinterpret_cast<std::uint32_t*>( l1_table_base ),
         base,
-        length / l2_table_64k_section_size,
+        round_up_64k( length ) / l2_table_64k_section_size,
         page64k_normal_rw_l1,
         reinterpret_cast<std::uint32_t*>( l2_table_base ),
         page64k_normal_rw_l2
