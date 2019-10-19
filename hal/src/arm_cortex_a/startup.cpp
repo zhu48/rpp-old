@@ -44,9 +44,7 @@ namespace {
         mmu::map_section_rw_device( PL0_BASE, PL0_LENG );
         mmu::map_section_rw_device( PL1_BASE, PL1_LENG );
         mmu::map_section_rw_device( IOP_BASE, IOP_LENG );
-        mmu::map_section_rw_device( SLCR_BASE, SLCR_LENG );
-        mmu::map_section_rw_device( PS_BASE, PS_LENG );
-        mmu::map_section_rw_device( CPU_BASE, CPU_LENG );
+        mmu::map_section_rw_device( SLCR_BASE, CPU_END - SLCR_BASE );
 
         mmu::commit_mappings();
     }
