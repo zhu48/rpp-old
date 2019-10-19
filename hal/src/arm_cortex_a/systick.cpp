@@ -105,9 +105,10 @@ std::chrono::microseconds portable::systick::init(
     }
 
     IRQ_SetHandler( IRQn::PrivTimer_IRQn, update_tick );
-    IRQ_Enable( IRQn::PrivTimer_IRQn );
-
+    user_handler = timeout_fn;
     PTIM_SetControl( ptim_enable | ptim_auto_reload | ptim_irq_enable );
+
+    IRQ_Enable( IRQn::PrivTimer_IRQn );
 
     switch ( base ) {
         case period_base::us_1 : return std::chrono::microseconds{ multiplier * 1 };
