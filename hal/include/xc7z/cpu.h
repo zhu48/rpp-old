@@ -5,7 +5,11 @@
 extern "C" {
 #endif // #ifdef __cplusplus
 
+#ifdef __cplusplus
+typedef enum IRQn : std::int32_t {
+#else
 typedef enum IRQn {
+#endif // #ifdef __cplusplus
     SGI0_IRQn            =  0, //!< Software Generated Interrupt 0
     SGI1_IRQn            =  1, //!< Software Generated Interrupt 1
     SGI2_IRQn            =  2, //!< Software Generated Interrupt 2
