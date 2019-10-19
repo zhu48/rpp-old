@@ -160,6 +160,7 @@ set(
 )
 set(
     HAL_SRC_FILES
+        ${HAL_SRC_DIR}/irq_ctrl.cpp
         ${HAL_SRC_DIR}/mmu.cpp
         ${HAL_SRC_DIR}/portable.cpp
         ${HAL_SRC_DIR}/startup.cpp
@@ -186,6 +187,7 @@ if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
             ${CMSIS_CORE_INC_DIR}/cmsis_compiler.h
             ${CMSIS_CORE_INC_DIR}/cmsis_gcc.h
             ${CMSIS_CORE_INC_DIR}/core_ca.h
+            ${CMSIS_CORE_INC_DIR}/irq_ctrl.h
     )
 endif()
 
