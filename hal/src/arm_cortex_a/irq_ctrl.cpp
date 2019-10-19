@@ -10,7 +10,6 @@
 namespace {
 
     constexpr std::size_t num_spi_lines = 224;
-    constexpr std::size_t spi_id_base   = 32;
 
     std::array<portable::handler_fn_t,num_spi_lines> irq_handlers;
 
@@ -20,11 +19,11 @@ namespace {
     }
 
     bool irqn_valid( IRQn_ID_t irqn ) {
-        return irqn >= spi_id_base && irqn < num_spi_lines;
+        return irqn < num_spi_lines;
     }
 
     std::size_t to_index( IRQn_ID_t irqn ) {
-        return irqn - spi_id_base;
+        return irqn;
     }
 
 }
