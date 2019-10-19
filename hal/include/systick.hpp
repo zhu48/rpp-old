@@ -8,17 +8,32 @@
 namespace portable::systick {
 
     /**
+     * Supported base system tick intervals.
+     */
+    enum class period_base {
+        us_1, //!< 1 microsecond base.
+        us_2, //!< 2 microsecond base.
+        us_3, //!< 3 microsecond base.
+        us_5  //!< 5 microsecond base.
+    };
+
+    /**
      * Initialize the system tick timer with a period and timeout hander function.
      * 
-     * The requested tick period may not always be supported by the system. If it is not, the tick
-     * period will be rounded up to a supported period.
+     * The system tick period is the product of the tick base and tick multiplier. Depending on the
+     * hardware counter backing the system tick, smaller period bases may be less precise.
      * 
-     * \param period     The requested system tick period.
+     * \param base       The base system tick period.
+     * \param multiplier The system tick period multiplier.
      * \param timeout_fn The interrupt service routine to handle tick timeouts.
      * 
      * \return Returns the actual tick period the timer is configured with.
      */
-    std::chrono::microseconds init( std::chrono::microseconds period, handler_fn_t timeout_fn );
+    std::chrono::microseconds init(
+        period_base   base,
+        std::uint32_t multiplier,
+        handler_fn_t  timeout_fn
+    );
 
     /**
      * Obtain the current system uptime.
