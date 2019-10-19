@@ -4,6 +4,6 @@
 
 using namespace platform;
 
-std::uint32_t core_freq_hz() {
+std::uint32_t platform::core_freq_hz() {
     return APU_FREQ;
 }
