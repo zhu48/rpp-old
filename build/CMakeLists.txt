@@ -100,6 +100,10 @@ set(
 	TEST_SCHED_SRC_FILES
 		${TEST_SRC_DIR}/test_sched.cpp
 )
+set(
+	TEST_SYSTICK_SRC_FILES
+		${TEST_SRC_DIR}/test_systick.cpp
+)
 
 #######################
 # Gather Dependencies #
@@ -160,6 +164,14 @@ if(RPP_TEST_TARGET)
 	)
 	# link to kernel library
 	target_link_libraries(rpp_test_sched PUBLIC rpp)
+
+	# compile test executable
+	add_executable(
+		rpp_test_systick
+			${TEST_SYSTICK_SRC_FILES}
+	)
+	# link to kernel library
+	target_link_libraries(rpp_test_systick PUBLIC rpp)
 
 	if(HAL_PERIPH_LIB)
 		add_executable(pwm_test ${TEST_PWM_SRC_FILES})

@@ -74,5 +74,6 @@ docs/Doxyfile
 
 # Project Targets
 rpp_test_sched
+rpp_test_systick
 pwm_test
 pwb_test
