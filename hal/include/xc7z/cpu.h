@@ -48,6 +48,7 @@ typedef enum IRQn {
 #define __L2C_PRESENT      1U //!< L2C present
 
 #include "core_ca.h"
+#include "irq_ctrl.h"
 
 #ifdef __cplusplus
 } // extern "C"

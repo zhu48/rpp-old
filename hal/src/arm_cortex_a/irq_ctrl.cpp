@@ -7,12 +7,6 @@
 
 #include "portable_types.hpp"
 
-extern "C" {
-
-    #include "irq_ctrl.h"
-
-}
-
 namespace {
 
     constexpr std::size_t num_spi_lines = 224;
