@@ -100,6 +100,7 @@ namespace {
         __FPU_Enable();
 
         // Enable interrupts.
+        IRQ_Initialize();
         __asm__ volatile( "CPSIE if" );
 
         // Change core mode or state.
