@@ -139,9 +139,10 @@ namespace {
 
     extern "C" __attribute__ ((interrupt))
     void interrupt_request( void ) {
-        while(true) {
-            // spin
-        }
+        const auto curr_irq = IRQ_GetActiveIRQ();
+
+        IRQ_GetHandler( curr_irq )();
+        IRQ_EndOfInterrupt( curr_irq );
     }
 
     extern "C" __attribute__ ((interrupt))
