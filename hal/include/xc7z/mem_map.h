@@ -40,7 +40,7 @@
 #define SMC_LENG       ( SMC_END - SMC_BASE )
 
 #define SLCR_BASE      ( 0xF8000000 )
-#define SLCR_END       ( 0xF800C000 )
+#define SLCR_END       ( 0xF8000C00 )
 #define SLCR_LENG      ( SLCR_END - SLCR_BASE )
 
 #define PS_BASE        ( 0xF8001000 )
