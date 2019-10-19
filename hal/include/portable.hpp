@@ -20,6 +20,8 @@ namespace portable {
      */
     void switch_context( context_t& context );
 
+    void sleep();
+
 }
 
 #endif // #ifndef PORTABLE_HPP

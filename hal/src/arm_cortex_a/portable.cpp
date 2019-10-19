@@ -2,6 +2,8 @@
 
 #include "portable.hpp"
 
+#include "cpu.hpp"
+
 using namespace portable;
 
 namespace {
@@ -27,4 +29,8 @@ void portable::initialize_stack(
 
 void portable::switch_context( context_t& context ) {
     
+}
+
+void portable::sleep() {
+    __WFI();
 }
