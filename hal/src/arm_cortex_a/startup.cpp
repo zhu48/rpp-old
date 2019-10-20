@@ -49,6 +49,15 @@ namespace {
         mmu::commit_mappings();
     }
 
+    void clear_all_interrupts() {
+        for ( int i = 0; i < 32; ++i ) {
+            GICDistributor->ICPENDR[i] = ~0;
+        }
+        for ( int i = 0; i < 4; ++i ) {
+            GICDistributor->CPENDSGIR[i] = ~0;
+        }
+    }
+
     extern "C" __attribute__ ((naked))
     void reset( void ) {
         // In a multi-core system, enable non-primary cores to sleep.
@@ -98,6 +107,9 @@ namespace {
         __FPU_Enable();
 
         // Enable interrupts.
+        GIC_DisableInterface();
+        GIC_DisableDistributor();
+        clear_all_interrupts();
         IRQ_Initialize();
         __asm__ volatile( "CPSIE if" );
 
