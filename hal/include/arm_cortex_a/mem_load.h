@@ -4,7 +4,7 @@
 #include "mem_map.h"
 
 #define EXROM_BASE ( OCM_LOW_BASE )
-#define EXROM_END  ( EXROM_BASE + 0x00004000 )
+#define EXROM_END  ( EXROM_BASE + 0x0000C000 )
 #define EXROM_LENG ( EXROM_END - EXROM_BASE )
 
 #define DAROM_BASE ( EXROM_END )
