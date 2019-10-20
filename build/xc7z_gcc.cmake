@@ -56,7 +56,7 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 # disable various system calls
 set(
     CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -nodefaultlibs"
+        "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles"
     CACHE STRING "Linker flags"
 )
 
