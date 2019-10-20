@@ -71,6 +71,7 @@ set(HAL_PLT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${HAL_TARGET_PLATFORM})
 
 set(HAL_ARCH_INC_DIR     ${HAL_INC_DIR}/${HAL_TARGET_ARCH})
 set(HAL_PLATFORM_INC_DIR ${HAL_INC_DIR}/${HAL_TARGET_PLATFORM})
+set(HAL_GSL_INC_DIR      ${HAL_INC_DIR}/gsl)
 
 set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
 
@@ -159,6 +160,10 @@ set(
         ${HAL_ARCH_INC_DIR}/mmu.hpp
 )
 set(
+    HAL_GSL_INC_FILES
+        ${HAL_GSL_INC_DIR}/gsl_util.hpp
+)
+set(
     HAL_SRC_FILES
         ${HAL_SRC_DIR}/irq_ctrl.cpp
         ${HAL_SRC_DIR}/mmu.cpp
@@ -223,6 +228,7 @@ add_library(
         ${HAL_INC_FILES}
         ${HAL_ARCH_INC_FILES}
         ${HAL_PLATFORM_INC_FILES}
+        ${HAL_GSL_INC_FILES}
         ${HAL_SRC_FILES}
         ${HAL_PLT_FILES}
         ${XSDK_PLATFORM_FILES}
@@ -233,6 +239,7 @@ target_include_directories(
     hal
     PUBLIC
         ${HAL_INC_DIR}
+        ${HAL_GSL_INC_DIR}
     PRIVATE
         ${HAL_PLATFORM_INC_DIR}
         ${HAL_ARCH_INC_DIR}
