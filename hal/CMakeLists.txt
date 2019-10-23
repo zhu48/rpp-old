@@ -71,7 +71,6 @@ set(HAL_PLT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${HAL_TARGET_PLATFORM})
 
 set(HAL_ARCH_INC_DIR     ${HAL_INC_DIR}/${HAL_TARGET_ARCH})
 set(HAL_PLATFORM_INC_DIR ${HAL_INC_DIR}/${HAL_TARGET_PLATFORM})
-set(HAL_GSL_INC_DIR      ${HAL_INC_DIR}/gsl)
 
 set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
 
@@ -160,10 +159,6 @@ set(
         ${HAL_ARCH_INC_DIR}/mmu.hpp
 )
 set(
-    HAL_GSL_INC_FILES
-        ${HAL_GSL_INC_DIR}/gsl_util.hpp
-)
-set(
     HAL_SRC_FILES
         ${HAL_SRC_DIR}/irq_ctrl.cpp
         ${HAL_SRC_DIR}/mmu.cpp
@@ -203,6 +198,8 @@ endif()
 # get repository containing directory
 get_filename_component(REPO_DIR ${RPP_ROOT_DIR} DIRECTORY)
 
+add_subdirectory(${REPO_DIR}/GSL ${CMAKE_CURRENT_SOURCE_DIR}/gsl)
+
 if(EXISTS ${REPO_DIR}/rtl_devices)
     set(HAL_PERIPH_LIB TRUE)
     set(HAL_PERIPH_LIB TRUE PARENT_SCOPE)
@@ -228,7 +225,6 @@ add_library(
         ${HAL_INC_FILES}
         ${HAL_ARCH_INC_FILES}
         ${HAL_PLATFORM_INC_FILES}
-        ${HAL_GSL_INC_FILES}
         ${HAL_SRC_FILES}
         ${HAL_PLT_FILES}
         ${XSDK_PLATFORM_FILES}
@@ -239,7 +235,6 @@ target_include_directories(
     hal
     PUBLIC
         ${HAL_INC_DIR}
-        ${HAL_GSL_INC_DIR}
     PRIVATE
         ${HAL_PLATFORM_INC_DIR}
         ${HAL_ARCH_INC_DIR}
@@ -254,6 +249,8 @@ if(EXISTS ${XSDK_HW_PLATFORM})
 endif()
 # link to C mem* functions
 target_link_libraries(hal PUBLIC cmem)
+# link to GSL
+target_link_libraries(hal PRIVATE gsl)
 # link to peripheral device driver library
 if(HAL_PERIPH_LIB)
     target_link_libraries(hal PRIVATE periph)
