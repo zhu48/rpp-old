@@ -1,7 +1,16 @@
 #ifndef GSL_UTIL_HPP
 #define GSL_UTIL_HPP
 
+#include <cstddef>
+
 namespace gsl {
+
+    /**
+     * Index type to avoid common errors and help the optimizer.
+     * 
+     * \note C++ Core Guidlines ES.107
+     */
+    using index = std::ptrdiff_t;
 
     /**
      * Explicitly lossy or undefined-behavior cast.
@@ -16,8 +25,7 @@ namespace gsl {
      * \return Returns the result of the narrowing cast.
      */
     template <class N, class W>
-    constexpr N narrow_cast( W&& val ) noexcept
-    {
+    constexpr N narrow_cast( W&& val ) noexcept {
         return static_cast<N>( std::forward<W>( val ) );
     }
 
