@@ -39,7 +39,7 @@ namespace {
         mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
         mmu::map_4k_rw( DARAM_BASE, DARAM_LENG );
         mmu::map_4k_rw( PGRAM0_BASE, PGRAM0_LENG );
-        mmu::map_4k_rw( PGRAM1_BASE, PGRAM1_LENG );
+        mmu::map_4k_rw( PGRAM1_BASE, PGRAM1_LENG-4096 );
 
         mmu::map_section_rw_device( PL0_BASE, PL0_LENG );
         mmu::map_section_rw_device( PL1_BASE, PL1_LENG );
