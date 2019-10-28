@@ -2,8 +2,8 @@
 
 MEMORY {
     EXROM  (x)  : ORIGIN = EXROM_BASE, LENGTH = EXROM_LENG
-    DAROM  (r)  : ORIGIN = DAROM_BASE, LENGTH = DAROM_LENG
     DARAM  (rw) : ORIGIN = DARAM_BASE, LENGTH = DARAM_LENG
+    DAROM  (r)  : ORIGIN = DAROM_BASE, LENGTH = DAROM_LENG
     PGRAM0 (rw) : ORIGIN = PGRAM0_BASE, LENGTH = PGRAM0_LENG
     PGRAM1 (rw) : ORIGIN = PGRAM1_BASE, LENGTH = PGRAM1_LENG
 }
@@ -39,11 +39,6 @@ SECTIONS {
     } > EXROM
 
     . = ALIGN(4);
-    .rodata : {
-        *(.rodata*)
-    } > DAROM
-
-    . = ALIGN(4);
     .data : {
         *(.data*)
     } > DARAM
@@ -52,4 +47,9 @@ SECTIONS {
     .bss : {
         *(.bss*)
     } > DARAM
+
+    . = ALIGN(4);
+    .rodata : {
+        *(.rodata*)
+    } > DAROM
 }

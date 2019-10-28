@@ -36,10 +36,10 @@ namespace {
         mmu::fault_all();
 
         mmu::map_4k_x( EXROM_BASE, EXROM_LENG );
-        mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
         mmu::map_4k_rw( DARAM_BASE, DARAM_LENG );
+        mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
         mmu::map_4k_rw( PGRAM0_BASE, PGRAM0_LENG );
-        mmu::map_4k_rw( PGRAM1_BASE, PGRAM1_LENG );
+        mmu::map_4k_rw( PGRAM1_BASE, PGRAM1_LENG-4096 );
 
         mmu::map_section_rw_device( PL0_BASE, PL0_LENG );
         mmu::map_section_rw_device( PL1_BASE, PL1_LENG );
@@ -72,7 +72,7 @@ namespace {
             "    BNE   sleep                 \n" // stay asleep until a handler re-directs the core
         );
 
-        __set_SP( PGRAM1_END - 4 ); // initialize kernel stack before calling any functions
+        __set_SP( PGRAM0_END - 4 ); // initialize kernel stack before calling any functions
 
         // Initialize the memory system, including the MMU.
         L1C_DisableCaches();
@@ -100,6 +100,7 @@ namespace {
         __asm__ volatile( "CPS #0x1B" ); // switch to UND mode
         __set_SP( PGRAM1_END - 5*4096 - 4 );
         __asm__ volatile( "CPS #0x1F" ); // switch to SYS mode
+        __set_SP( PGRAM0_END - 4 );
 
         // Initialize any critical I/O devices.
 
