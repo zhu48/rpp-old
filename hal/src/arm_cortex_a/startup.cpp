@@ -36,8 +36,8 @@ namespace {
         mmu::fault_all();
 
         mmu::map_4k_x( EXROM_BASE, EXROM_LENG );
-        mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
         mmu::map_4k_rw( DARAM_BASE, DARAM_LENG );
+        mmu::map_4k_ro( DAROM_BASE, DAROM_LENG );
         mmu::map_4k_rw( PGRAM0_BASE, PGRAM0_LENG );
         mmu::map_4k_rw( PGRAM1_BASE, PGRAM1_LENG-4096 );
 
