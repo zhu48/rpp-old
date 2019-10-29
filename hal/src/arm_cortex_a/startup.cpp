@@ -75,9 +75,9 @@ namespace {
         __set_SP( PGRAM0_END - 4 ); // initialize kernel stack before calling any functions
 
         // Initialize the memory system, including the MMU.
+        L1C_DisableBTAC();
         L1C_DisableCaches();
         L1C_InvalidateBTAC();
-        L1C_InvalidateICacheAll();
         L1C_CleanInvalidateDCacheAll();
         MMU_Disable();
         MMU_InvalidateTLB();
