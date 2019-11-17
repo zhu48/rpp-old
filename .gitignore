@@ -64,6 +64,7 @@ link.ld
 
 # CTest
 CTestCostData.txt
+CTestTestfile.cmake
 
 # Make
 Makefile
