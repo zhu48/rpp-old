@@ -73,14 +73,12 @@ set(
 		${KERNEL_PUB_INC_DIR}/thread.hpp
 		${KERNEL_PUB_INC_DIR}/scheduler.hpp
 		${KERNEL_PUB_INC_DIR}/queue_array.hpp
-		${KERNEL_PUB_INC_DIR}/dynamic_span.hpp
 )
 set(
 	K_API_IPP_FILES
 		${KERNEL_PUB_IPP_DIR}/thread.ipp
 		${KERNEL_PUB_IPP_DIR}/scheduler.ipp
 		${KERNEL_PUB_IPP_DIR}/queue_array.ipp
-		${KERNEL_PUB_IPP_DIR}/dynamic_span.ipp
 )
 set(
 	K_INC_FILES
@@ -108,6 +106,11 @@ set(
 #######################
 # Gather Dependencies #
 #######################
+
+get_filename_component(RPP_PARENT_DIR ${RPP_ROOT_DIR} DIRECTORY)
+
+# C++ Core Guidelines Guideline Support Library
+add_subdirectory(${RPP_PARENT_DIR}/gsl ${CMAKE_CURRENT_BINARY_DIR}/gsl)
 
 # hardware abstraction layer
 set(HAL_TARGET_PLATFORM ${RPP_TARGET_PLATFORM})
@@ -145,6 +148,8 @@ target_include_directories(
 )
 # link to HAL
 target_link_libraries(rpp PUBLIC hal)
+# link to GSL
+target_link_libraries(rpp PUBLIC gsl)
 # use custom linker script if it exists
 if(TARGET linker)
 	add_dependencies(rpp linker)

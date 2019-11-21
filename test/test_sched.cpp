@@ -22,12 +22,7 @@ int main( int argc, char* argv[] ) {
         rpp::decision_data{ &(thrd_arr[3]), 0 }
     };
 
-    rpp::run(
-        rpp::dynamic_span<rpp::decision_data>{
-            &(dec_arr.data()[0]),
-            std::tuple_size_v<decltype(dec_arr)>
-        }
-    );
+    rpp::run( dec_arr );
 
     return -1;
 }

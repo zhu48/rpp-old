@@ -3,8 +3,9 @@
 
 #include <cstdint>
 
+#include "span.hpp"
+
 #include "queue_array.hpp"
-#include "dynamic_span.hpp"
 
 #include "thread.hpp"
 
@@ -17,7 +18,7 @@ namespace rpp {
         priority_t    prio = 0;
     };
 
-    [[noreturn]] void run( dynamic_span<decision_data> threads );
+    [[noreturn]] void run( gsl::span<decision_data> threads );
 
 }
 
