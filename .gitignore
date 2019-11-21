@@ -57,6 +57,7 @@ CMakeCache.txt
 cmake_install.cmake
 CMakeFiles
 compile_commands.json
+DartConfiguration.tcl
 
 # CMake-Generated Source Files
 portable_defs.hpp
