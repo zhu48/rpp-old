@@ -5,17 +5,33 @@ cmake_minimum_required(VERSION 3.3)
 # Set Project-Level Configurations #
 ####################################
 
-project(HAL CXX C ASM)
+project(
+    HAL
+        LANGUAGES
+            CXX
+            C
+            ASM
+        VERSION
+            0.0.1
+)
 
-# set language standards
-set(CMAKE_C_STANDARD                    11)
-set(CMAKE_CXX_STANDARD                  17)
-set(CMAKE_C_STANDARD_REQUIRED           TRUE)
-set(CMAKE_CXX_STANDARD_REQUIRED         TRUE)
-set(CMAKE_C_IMPLICIT_LINK_LIBRARIES     "")
-set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES   "")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES   "")
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "")
+if(CMAKE_SYSTEM_NAME MATCHES Generic)
+    set(RPP_HAL_BAREMETAL ON)
+    set(RPP_HAL_HOSTED    OFF)
+else()
+    set(RPP_HAL_BAREMETAL OFF)
+    set(RPP_HAL_HOSTED    ON)
+endif()
+set(RPP_HAL_TARGET_ISA ${CMAKE_SYSTEM_PROCESSOR})
+
+option(RPP_HAL_USE_CMSIS_CPU_HEADERS ${RPP_HAL_BAREMETAL})
+option(RPP_HAL_USE_HOST_THREADS      ${RPP_HAL_HOSTED})
+
+if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+    set(IS_SUBDIRECTORY FALSE)
+else()
+    set(IS_SUBDIRECTORY TRUE)
+endif()
 
 # use CMSIS processor abstraction headers for ARM processors
 set(
@@ -31,12 +47,11 @@ if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
         message(FATAL_ERROR "Could not find CMSIS repository at ${CMSIS_PATH}")
     endif()
 else()
-    message(STATUS "Using CMSIS CPU abstraction headers")
     set(HAL_USE_CMSIS FALSE)
 endif()
 
 # find threading library if required
-if(RPP_PTHREADS)
+if(RPP_HAL_USE_HOST_THREADS)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
 endif()
@@ -65,14 +80,14 @@ endif()
 # Derive Directories #
 ######################
 
-set(HAL_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(HAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${HAL_TARGET_ARCH})
-set(HAL_PLT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/${HAL_TARGET_PLATFORM})
+set(HAL_INC_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
+set(HAL_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src/${HAL_TARGET_ARCH})
+set(HAL_PLT_DIR ${CMAKE_CURRENT_LIST_DIR}/src/${HAL_TARGET_PLATFORM})
 
 set(HAL_ARCH_INC_DIR     ${HAL_INC_DIR}/${HAL_TARGET_ARCH})
 set(HAL_PLATFORM_INC_DIR ${HAL_INC_DIR}/${HAL_TARGET_PLATFORM})
 
-set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/templates)
+set(HAL_TEMPLATE_DIR ${CMAKE_CURRENT_LIST_DIR}/templates)
 
 if(HAL_TARGET_ARCH IN_LIST HAL_TARGET_ARCH_ARM_OPTS)
     set(CMSIS_CORE_INC_DIR ${CMSIS_PATH}/CMSIS/Core_A/Include)
@@ -85,11 +100,13 @@ endif()
 # use SoC-specific linker script path
 set(HAL_LD_TEMPLATE ${HAL_TEMPLATE_DIR}/${HAL_TARGET_ARCH}/link_template.ld)
 if(EXISTS ${HAL_LD_TEMPLATE})
-    set(HAL_CUSTOM_LD TRUE)
+    set(RPP_HAL_USE_CUSTOM_LD TRUE)
 else()
-    set(HAL_CUSTOM_LD FALSE)
+    set(RPP_HAL_USE_CUSTOM_LD FALSE)
 endif()
-set(HAL_CUSTOM_LD ${HAL_CUSTOM_LD} PARENT_SCOPE)
+if(IS_SUBDIRECTORY)
+    set(RPP_HAL_USE_CUSTOM_LD ${RPP_HAL_USE_CUSTOM_LD} PARENT_SCOPE)
+endif()
 
 #################################
 # Generate Files from Templates #
@@ -104,14 +121,14 @@ add_custom_command(
             -DHAL_TARGET_ARCH=${HAL_TARGET_ARCH}
             -DHAL_INC_DIR=${HAL_INC_DIR}
             -DHAL_TEMPLATE_DIR=${HAL_TEMPLATE_DIR}
-            -P ${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
+            -P ${CMAKE_CURRENT_LIST_DIR}/configure_file.cmake
     DEPENDS
         ${HAL_TEMPLATE_DIR}/portable_defs.in
-        ${CMAKE_CURRENT_SOURCE_DIR}/configure_file.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/configure_file.cmake
 )
 
 # pre-process linker script if it exists
-if(HAL_CUSTOM_LD)
+if(RPP_HAL_USE_CUSTOM_LD)
     message(STATUS "Using custom linker script")
 
     set(HAL_LD ${HAL_SRC_DIR}/link.ld)
@@ -195,17 +212,16 @@ endif()
 # Gather Dependencies #
 #######################
 
-# get repository containing directory
-get_filename_component(REPO_DIR ${RPP_ROOT_DIR} DIRECTORY)
-
-add_subdirectory(${REPO_DIR}/GSL ${CMAKE_CURRENT_SOURCE_DIR}/gsl)
+find_package(GSL CONFIG REQUIRED)
 
 if(EXISTS ${REPO_DIR}/rtl_devices)
     set(HAL_PERIPH_LIB TRUE)
-    set(HAL_PERIPH_LIB TRUE PARENT_SCOPE)
     add_subdirectory(${REPO_DIR}/rtl_devices ${CMAKE_CURRENT_BINARY_DIR}/periph)
-    set(TEST_PWM_SRC_FILES ${TEST_PWM_SRC_FILES} PARENT_SCOPE)
-    set(TEST_PWB_SRC_FILES ${TEST_PWB_SRC_FILES} PARENT_SCOPE)
+    if(IS_SUBDIRECTORY)
+        set(HAL_PERIPH_LIB TRUE PARENT_SCOPE)
+        set(TEST_PWM_SRC_FILES ${TEST_PWM_SRC_FILES} PARENT_SCOPE)
+        set(TEST_PWB_SRC_FILES ${TEST_PWB_SRC_FILES} PARENT_SCOPE)
+    endif()
 else()
     set(HAL_PERIPH_LIB FALSE)
 endif()
@@ -215,12 +231,12 @@ endif()
 ################################
 
 # compile C mem* functions as a non-LTO library
-add_library(cmem STATIC ${HAL_SRC_DIR}/mem.c)
-set_target_properties(cmem PROPERTIES INTERPROCEDURAL_OPTIMIZATION false)
+add_library(rpp_hal_cmem STATIC ${HAL_SRC_DIR}/mem.c)
+set_target_properties(rpp_hal_cmem PROPERTIES INTERPROCEDURAL_OPTIMIZATION false)
 
 # compile HAL as static library
 add_library(
-    hal
+    rpp_hal
     STATIC
         ${HAL_INC_FILES}
         ${HAL_ARCH_INC_FILES}
@@ -232,7 +248,7 @@ add_library(
 )
 # set include directories
 target_include_directories(
-    hal
+    rpp_hal
     PUBLIC
         ${HAL_INC_DIR}
     PRIVATE
@@ -242,26 +258,28 @@ target_include_directories(
 )
 if(EXISTS ${XSDK_HW_PLATFORM})
     target_include_directories(
-        hal
+        rpp_hal
         PRIVATE
             ${XSDK_HW_PLATFORM}
     )
 endif()
 # link to C mem* functions
-target_link_libraries(hal PUBLIC cmem)
+target_link_libraries(rpp_hal PUBLIC rpp_hal_cmem)
 # link to GSL
-target_link_libraries(hal PRIVATE gsl)
+target_link_libraries(rpp_hal PRIVATE GSL::gsl)
 # link to peripheral device driver library
 if(HAL_PERIPH_LIB)
-    target_link_libraries(hal PRIVATE periph)
+    target_link_libraries(rpp_hal PRIVATE periph)
 endif()
 # link to pthreads if targeting Unix host
-if(RPP_PTHREADS)
-    target_link_libraries(hal PRIVATE Threads::Threads)
+if(RPP_HAL_USE_HOST_THREADS)
+    target_link_libraries(rpp_hal PRIVATE Threads::Threads)
 endif()
 
 # add custom linker script if necessary
-if(HAL_CUSTOM_LD)
+if(RPP_HAL_USE_CUSTOM_LD)
     add_custom_target(linker DEPENDS ${HAL_LD})
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${HAL_LD}" PARENT_SCOPE)
+    if(IS_SUBDIRECTORY)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${HAL_LD}" PARENT_SCOPE)
+    endif()
 endif()

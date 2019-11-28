@@ -7,15 +7,19 @@ cmake_minimum_required(VERSION 3.3)
 
 set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
 
-set(RPP_TARGET_PLATFORM "NONE"    CACHE STRING "Target platform"              FORCE)
-set(RPP_COMPILER        "DEFAULT" CACHE STRING "Target compiler"              FORCE)
-set(RPP_TEST_TARGET     "FALSE"   CACHE BOOL   "Flag to create a test target" FORCE)
+set(RPP_TARGET_PLATFORM "xc7z" CACHE STRING "Target platform"              FORCE)
+set(RPP_COMPILER        "gcc"  CACHE STRING "Target compiler"              FORCE)
+set(RPP_TEST_TARGET     "TRUE" CACHE BOOL   "Flag to create a test target" FORCE)
 
-set(CMSIS_PATH "NONE" CACHE PATH "ARM CMSIS-5 repository root" FORCE)
+set(CMSIS_PATH "C:/SVC/zhu48/CMSIS_5" CACHE PATH "ARM CMSIS-5 repository root" FORCE)
 
-set(XSDK_VERSION      "NONE" CACHE STRING "Xilinx SDK version"            FORCE)
-set(XSDK_INSTALL_PATH "NONE" CACHE PATH   "Xilinx SDK installation path"  FORCE)
-set(XSDK_HW_PLATFORM  "NONE" CACHE PATH   "Xilinx hardware platform path" FORCE)
+set(XSDK_VERSION      "2019.1"        CACHE STRING "Xilinx SDK version"            FORCE)
+set(XSDK_INSTALL_PATH "D:/Xilinx/SDK" CACHE PATH   "Xilinx SDK installation path"  FORCE)
+set(
+    XSDK_HW_PLATFORM
+        "C:/VivadoProjects/ZynqBerry/ZynqBerry.sdk/top_wrapper_hw_platform_0"
+        CACHE PATH "Xilinx hardware platform path" FORCE
+)
 
 ##############################
 # Valid Configuration Values #
